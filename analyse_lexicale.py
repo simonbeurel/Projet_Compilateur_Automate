@@ -39,12 +39,13 @@ class FloLexer(Lexer):
 
 	# cas spéciaux:
 	IDENTIFIANT['ecrire'] = ECRIRE
+	IDENTIFIANT['lire'] = LIRE
+
 	IDENTIFIANT['si'] = CONDITION_SI
 	IDENTIFIANT['sinon si'] = CONDITION_SINON_SI
 	IDENTIFIANT['sinon'] = CONDITION_SINON
 	IDENTIFIANT['retourner'] = RETOURNER
 	IDENTIFIANT['tantque'] = TANTQUE
-
 	
 	#Syntaxe des commentaires à ignorer
 	ignore_comment = r'\#.*'
