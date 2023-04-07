@@ -6,7 +6,7 @@ import arbre_abstrait
 class FloParser(Parser):
 	# On récupère la liste des lexèmes de l'analyse lexicale
 	tokens = FloLexer.tokens
-
+	debugfile = 'parser.out'
 	# Règles gramaticales et actions associées
 
 	@_('listeInstructions')

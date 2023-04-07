@@ -3,12 +3,12 @@ from sly import Lexer
 
 class FloLexer(Lexer):
 	# Noms des lexèmes (sauf les litéraux). En majuscule. Ordre non important
-	tokens = { IDENTIFIANT, TANTQUE, RETOURNER, CONDITION_SI, CONDITION_SINON_SI, CONDITION_SINON, ENTIER, ECRIRE,INFERIEUR_OU_EGAL, BOOLEEN, EGAL_EGAL, EGAL, DIFFERENT, INFERIEUR, SUPERIEUR, SUPERIEUR_OU_EGAL}
+	tokens = { IDENTIFIANT,PORTE_OU, PORTE_ET, LIRE,  PORTE_NON, TANTQUE, RETOURNER, CONDITION_SI, CONDITION_SINON_SI, CONDITION_SINON, ENTIER, ECRIRE,INFERIEUR_OU_EGAL, BOOLEEN, EGAL_EGAL, AFFECTATION, DIFFERENT, INFERIEUR, SUPERIEUR, SUPERIEUR_OU_EGAL}
 
 	#Les caractères litéraux sont des caractères uniques qui sont retournés tel quel quand rencontré par l'analyse lexicale. 
 	#Les litéraux sont vérifiés en dernier, après toutes les autres règles définies par des expressions régulières.
 	#Donc, si une règle commence par un de ces littérals (comme INFERIEUR_OU_EGAL), cette règle aura la priorité.
-	literals = { '+','*','(',')',";" }
+	literals = { '+','*','(',')',";", '*', '/', '{', '}', '%', ','}
 	
 	# chaines contenant les caractère à ignorer. Ici espace et tabulation
 	ignore = ' \t'
@@ -20,7 +20,12 @@ class FloLexer(Lexer):
 	DIFFERENT= r'!='
 	INFERIEUR= r'<'
 	SUPERIEUR= r'>'
-	EGAL = r'='
+	AFFECTATION = r'='
+
+	# Portes logiques
+	PORTE_OU= r'ou'
+	PORTE_ET= r'et'
+	PORTE_NON= r'non'
 
 	@_(r'0|[1-9][0-9]*')
 	def ENTIER(self, t):
@@ -29,10 +34,11 @@ class FloLexer(Lexer):
 
 	@_(r'Vrai|Faux')
 	def BOOLEEN(self,t):
-		if t.value=="Vrai":
-			return True
+		if t=='Faux':
+			t.value=False
 		else:
-			return False
+			t.value=True
+		return t
 
     	# cas général
 	IDENTIFIANT = r'[a-zA-Z][a-zA-Z0-9_]*' #en général, variable ou nom de fonction
