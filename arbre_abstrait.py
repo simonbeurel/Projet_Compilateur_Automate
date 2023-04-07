@@ -35,8 +35,8 @@ class Operation:
 		self.op = op
 		self.exp2 = exp2
 	def afficher(self,indent=0):
-		afficher("<operation>",indent)
-		afficher(self.op,indent+1)
+		afficher(f'<operation "{self.op}" >',indent)
+		##afficher(self.op,indent+1)
 		self.exp1.afficher(indent+1)
 		self.exp2.afficher(indent+1)
 		afficher("</operation>",indent)
