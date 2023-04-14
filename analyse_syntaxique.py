@@ -3,10 +3,6 @@ from sly import Parser
 from analyse_lexicale import FloLexer
 import arbre_abstrait
 
-    @_('LIRE "(" ")"')
-    def facteur(self,p):
-        return arbre_abstrait.Lire();
-
 class FloParser(Parser):
     # On récupère la liste des lexèmes de l'analyse lexicale
     tokens = FloLexer.tokens
@@ -76,6 +72,11 @@ class FloParser(Parser):
     @_('expr "-" produit')
     def expr(self, p):
         return arbre_abstrait.Operation('-', p[0], p[2])
+
+    @_('LIRE "(" ")"')
+    def facteur(self, p):
+        return arbre_abstrait.Lire();
+
 
 if __name__ == '__main__':
     lexer = FloLexer()
