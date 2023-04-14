@@ -28,6 +28,13 @@ class Ecrire:
 		afficher("<ecrire>",indent)
 		self.exp.afficher(indent+1)
 		afficher("</ecrire>",indent)
+
+class Lire:
+	def __init__(self):
+		pass
+	def afficher(self,indent=0):
+		afficher("<lire>",indent)
+		afficher("</lire>",indent)
 		
 class Operation:
 	def __init__(self,op,exp1,exp2):

@@ -3,6 +3,9 @@ from sly import Parser
 from analyse_lexicale import FloLexer
 import arbre_abstrait
 
+    @_('LIRE "(" ")"')
+    def facteur(self,p):
+        return arbre_abstrait.Lire();
 
 class FloParser(Parser):
     # On récupère la liste des lexèmes de l'analyse lexicale
