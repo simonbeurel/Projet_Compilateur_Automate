@@ -8,7 +8,7 @@ class FloLexer(Lexer):
 	#Les caractères litéraux sont des caractères uniques qui sont retournés tel quel quand rencontré par l'analyse lexicale. 
 	#Les litéraux sont vérifiés en dernier, après toutes les autres règles définies par des expressions régulières.
 	#Donc, si une règle commence par un de ces littérals (comme INFERIEUR_OU_EGAL), cette règle aura la priorité.
-	literals = { '+','*','(',')',";", '*', '/', '{', '}', '%', ','}
+	literals = { '+', '(', ')', ";", '*', '/', '{', '}', '%', ',','-'}
 	
 	# chaines contenant les caractère à ignorer. Ici espace et tabulation
 	ignore = ' \t'

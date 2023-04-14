@@ -58,6 +58,21 @@ class FloParser(Parser):
     def expr(self, p):
         return p[0]
 
+    @_('produit "/" facteur')
+    def produit(self, p):
+        return arbre_abstrait.Operation('/', p[0], p[2])
+
+    @_('"-" facteur')
+    def expr(self, p):
+        return arbre_abstrait.Operation('-', arbre_abstrait.Entier(0), p[1])
+
+    @_('produit "%" facteur')
+    def produit(self, p):
+        return arbre_abstrait.Operation('%', p[0], p[2])
+
+    @_('expr "-" produit')
+    def expr(self, p):
+        return arbre_abstrait.Operation('-', p[0], p[2])
 
 if __name__ == '__main__':
     lexer = FloLexer()
