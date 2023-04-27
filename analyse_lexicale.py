@@ -35,9 +35,9 @@ class FloLexer(Lexer):
 	@_(r'Vrai|Faux')
 	def BOOLEEN(self,t):
 		if t=='Faux':
-			t.value=False
+			t.value="Faux"
 		else:
-			t.value=True
+			t.value="Vrai"
 		return t
 
     	# cas général

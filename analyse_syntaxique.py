@@ -33,6 +33,82 @@ class FloParser(Parser):
     def ecrire(self, p):
         return arbre_abstrait.Ecrire(p.expr)  # p.expr = p[2]
 
+    @_('booleen')
+    def expr(self, p):
+        return p[0]
+
+    @_('BOOLEEN')
+    def booleen(self, p):
+        return arbre_abstrait.Booleen(p[0])
+    @_('somme')
+    def booleen(self,p):
+        return p[0]
+
+    @_('produit')
+    def somme(self,p):
+        return p[0]
+    @_('expr "-" produit')
+    def somme(self,p):
+        return arbre_abstrait.Operation('-', p[0], p[2])
+    @_('expr "+" produit')
+    def somme(self, p):
+        return arbre_abstrait.Operation('+', p[0], p[2])
+    @_('"-" facteur')
+    def somme(self, p):
+        return arbre_abstrait.Operation('-', arbre_abstrait.Entier(0), p[1])
+
+    @_('facteur')
+    def produit(self, p):
+        return p[0]
+    @_('produit "*" facteur')
+    def produit(self, p):
+        return arbre_abstrait.Operation('*', p[0], p[2])
+    @_('produit "/" facteur')
+    def produit(self, p):
+        return arbre_abstrait.Operation('/', p[0], p[2])
+    @_('produit "%" facteur')
+    def produit(self, p):
+        return arbre_abstrait.Operation('%', p[0], p[2])
+
+
+    @_('variable')
+    def facteur(self, p):
+        return p[0]
+    @_('IDENTIFIANT "(" argument ")" ')
+    def facteur(self, p):
+        return arbre_abstrait.nomFonction(p[0], p[2])
+    @_('IDENTIFIANT "(" ")"')
+    def facteur(self, p):
+        return arbre_abstrait.nomFonction(p[0], [])
+    @_('LIRE "(" ")"')
+    def facteur(self, p):
+        return arbre_abstrait.Lire()
+    @_('ENTIER')
+    def facteur(self, p):
+        return arbre_abstrait.Entier(p.ENTIER)
+    @_('"(" expr ")"')
+    def facteur(self, p):
+        return p.expr
+
+
+    @_('IDENTIFIANT')
+    def variable(self, p):
+        return arbre_abstrait.Variable(p[0])
+
+
+    @_('expr "," argument')
+    def argument(self, p):
+        return [p[0]] + p[2]
+    @_('expr')
+    def argument(self, p):
+        return [p[0]]
+
+
+    '''
+    @_('ECRIRE "(" expr ")" ";"')
+    def ecrire(self, p):
+        return arbre_abstrait.Ecrire(p.expr)  # p.expr = p[2]
+
     @_('expr "+" produit')
     def expr(self, p):
         return arbre_abstrait.Operation('+', p[0], p[2])
@@ -85,7 +161,7 @@ class FloParser(Parser):
     def facteur(self,p):
         return arbre_abstrait.nomFonction(p[0],[])
 
-    ############
+    
     @_('expr "," argument')
     def argument(self,p):
         return [p[0]]+p[2]
@@ -97,7 +173,7 @@ class FloParser(Parser):
     @_('IDENTIFIANT "(" argument ")"')
     def facteur(self,p):
         return arbre_abstrait.nomFonction(p[0],p[2])
-    ##########
+    '''
 
 
 if __name__ == '__main__':

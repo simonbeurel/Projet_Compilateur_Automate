@@ -71,3 +71,12 @@ class nomFonction:
 		for element in self.tab:
 			element.afficher(indent+2)
 		afficher("</nomFonction>",indent)
+
+class Booleen:
+	def __init__(self, valeur):
+		self.val = valeur
+
+	def afficher(self, indent=0):
+		afficher("<booleen>", indent)
+		afficher(self.val, indent+1)
+		afficher("</booleen",indent)
