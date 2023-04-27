@@ -43,6 +43,24 @@ class FloParser(Parser):
     @_('somme')
     def booleen(self,p):
         return p[0]
+    @_('somme EGAL_EGAL somme')
+    def booleen(self, p):
+        return arbre_abstrait.Operation('==', p[0], p[2])
+    @_('somme DIFFERENT somme')
+    def booleen(self, p):
+        return arbre_abstrait.Operation('!=', p[0], p[2])
+    @_('somme INFERIEUR somme')
+    def booleen(self, p):
+        return arbre_abstrait.Operation('<', p[0], p[2])
+    @_('somme INFERIEUR_OU_EGAL somme')
+    def booleen(self, p):
+        return arbre_abstrait.Operation('<=', p[0], p[2])
+    @_('somme SUPERIEUR somme')
+    def booleen(self, p):
+        return arbre_abstrait.Operation('>', p[0], p[2])
+    @_('somme SUPERIEUR_OU_EGAL somme')
+    def booleen(self, p):
+        return arbre_abstrait.Operation('>=', p[0], p[2])
 
     @_('produit')
     def somme(self,p):
