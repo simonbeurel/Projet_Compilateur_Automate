@@ -14,37 +14,42 @@ Rule 10    produit -> produit % facteur
 Rule 11    produit -> produit / facteur
 Rule 12    produit -> facteur
 Rule 13    produit -> produit * facteur
-Rule 14    facteur -> ENTIER
-Rule 15    facteur -> ( expr )
+Rule 14    facteur -> IDENTIFIANT ( argument )
+Rule 15    facteur -> IDENTIFIANT ( )
+Rule 16    facteur -> IDENTIFIANT
+Rule 17    facteur -> LIRE ( )
+Rule 18    facteur -> ENTIER
+Rule 19    facteur -> ( expr )
+Rule 20    argument -> expr
+Rule 21    argument -> expr , argument
 
 Unused terminals:
 
-    PORTE_ET
-    BOOLEEN
-    LIRE
-    CONDITION_SI
-    INFERIEUR_OU_EGAL
-    CONDITION_SINON_SI
-    DIFFERENT
-    CONDITION_SINON
-    IDENTIFIANT
-    PORTE_OU
-    TANTQUE
-    PORTE_NON
-    INFERIEUR
-    EGAL_EGAL
     SUPERIEUR
+    PORTE_OU
+    EGAL_EGAL
+    PORTE_NON
+    INFERIEUR_OU_EGAL
+    INFERIEUR
     SUPERIEUR_OU_EGAL
-    RETOURNER
     AFFECTATION
+    CONDITION_SI
+    CONDITION_SINON_SI
+    TANTQUE
+    DIFFERENT
+    BOOLEEN
+    CONDITION_SINON
+    RETOURNER
+    PORTE_ET
 
 Terminals, with rules where they appear:
 
 %                    : 10
-(                    : 5 15
-)                    : 5 15
+(                    : 5 14 15 17 19
+)                    : 5 14 15 17 19
 *                    : 13
 +                    : 9
+,                    : 21
 -                    : 6 7
 /                    : 11
 ;                    : 5
@@ -56,11 +61,11 @@ CONDITION_SINON_SI   :
 DIFFERENT            : 
 ECRIRE               : 5
 EGAL_EGAL            : 
-ENTIER               : 14
-IDENTIFIANT          : 
+ENTIER               : 18
+IDENTIFIANT          : 14 15 16
 INFERIEUR            : 
 INFERIEUR_OU_EGAL    : 
-LIRE                 : 
+LIRE                 : 17
 PORTE_ET             : 
 PORTE_NON            : 
 PORTE_OU             : 
@@ -72,8 +77,9 @@ error                :
 
 Nonterminals, with rules where they appear:
 
+argument             : 14 21
 ecrire               : 4
-expr                 : 5 6 9 15
+expr                 : 5 6 9 19 20 21
 facteur              : 7 10 11 12 13
 instruction          : 2 3
 listeInstructions    : 1 2
@@ -152,10 +158,16 @@ state 7
     (11) produit -> . produit / facteur
     (12) produit -> . facteur
     (13) produit -> . produit * facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
     -               shift and go to state 10
-    ENTIER          shift and go to state 13
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
     (               shift and go to state 8
 
     expr                           shift and go to state 9
@@ -164,7 +176,7 @@ state 7
 
 state 8
 
-    (15) facteur -> ( . expr )
+    (19) facteur -> ( . expr )
     (6) expr -> . expr - produit
     (7) expr -> . - facteur
     (8) expr -> . produit
@@ -173,13 +185,19 @@ state 8
     (11) produit -> . produit / facteur
     (12) produit -> . facteur
     (13) produit -> . produit * facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
     -               shift and go to state 10
-    ENTIER          shift and go to state 13
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
     (               shift and go to state 8
 
-    expr                           shift and go to state 14
+    expr                           shift and go to state 16
     produit                        shift and go to state 11
     facteur                        shift and go to state 12
 
@@ -188,20 +206,26 @@ state 9
     (5) ecrire -> ECRIRE ( expr . ) ;
     (6) expr -> expr . - produit
     (9) expr -> expr . + produit
-    )               shift and go to state 15
-    -               shift and go to state 16
-    +               shift and go to state 17
+    )               shift and go to state 17
+    -               shift and go to state 18
+    +               shift and go to state 19
 
 
 state 10
 
     (7) expr -> - . facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
-    ENTIER          shift and go to state 13
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
     (               shift and go to state 8
 
-    facteur                        shift and go to state 18
+    facteur                        shift and go to state 20
 
 state 11
 
@@ -212,9 +236,10 @@ state 11
     )               reduce using rule 8 (expr -> produit .)
     -               reduce using rule 8 (expr -> produit .)
     +               reduce using rule 8 (expr -> produit .)
-    %               shift and go to state 19
-    /               shift and go to state 20
-    *               shift and go to state 21
+    ,               reduce using rule 8 (expr -> produit .)
+    %               shift and go to state 21
+    /               shift and go to state 22
+    *               shift and go to state 23
 
 
 state 12
@@ -226,122 +251,215 @@ state 12
     )               reduce using rule 12 (produit -> facteur .)
     -               reduce using rule 12 (produit -> facteur .)
     +               reduce using rule 12 (produit -> facteur .)
+    ,               reduce using rule 12 (produit -> facteur .)
 
 
 state 13
 
-    (14) facteur -> ENTIER .
-    %               reduce using rule 14 (facteur -> ENTIER .)
-    /               reduce using rule 14 (facteur -> ENTIER .)
-    *               reduce using rule 14 (facteur -> ENTIER .)
-    )               reduce using rule 14 (facteur -> ENTIER .)
-    -               reduce using rule 14 (facteur -> ENTIER .)
-    +               reduce using rule 14 (facteur -> ENTIER .)
+    (14) facteur -> IDENTIFIANT . ( argument )
+    (15) facteur -> IDENTIFIANT . ( )
+    (16) facteur -> IDENTIFIANT .
+    (               shift and go to state 24
+    %               reduce using rule 16 (facteur -> IDENTIFIANT .)
+    /               reduce using rule 16 (facteur -> IDENTIFIANT .)
+    *               reduce using rule 16 (facteur -> IDENTIFIANT .)
+    )               reduce using rule 16 (facteur -> IDENTIFIANT .)
+    -               reduce using rule 16 (facteur -> IDENTIFIANT .)
+    +               reduce using rule 16 (facteur -> IDENTIFIANT .)
+    ,               reduce using rule 16 (facteur -> IDENTIFIANT .)
 
 
 state 14
 
-    (15) facteur -> ( expr . )
-    (6) expr -> expr . - produit
-    (9) expr -> expr . + produit
-    )               shift and go to state 22
-    -               shift and go to state 16
-    +               shift and go to state 17
+    (17) facteur -> LIRE . ( )
+    (               shift and go to state 25
 
 
 state 15
 
-    (5) ecrire -> ECRIRE ( expr ) . ;
-    ;               shift and go to state 23
+    (18) facteur -> ENTIER .
+    %               reduce using rule 18 (facteur -> ENTIER .)
+    /               reduce using rule 18 (facteur -> ENTIER .)
+    *               reduce using rule 18 (facteur -> ENTIER .)
+    )               reduce using rule 18 (facteur -> ENTIER .)
+    -               reduce using rule 18 (facteur -> ENTIER .)
+    +               reduce using rule 18 (facteur -> ENTIER .)
+    ,               reduce using rule 18 (facteur -> ENTIER .)
 
 
 state 16
+
+    (19) facteur -> ( expr . )
+    (6) expr -> expr . - produit
+    (9) expr -> expr . + produit
+    )               shift and go to state 26
+    -               shift and go to state 18
+    +               shift and go to state 19
+
+
+state 17
+
+    (5) ecrire -> ECRIRE ( expr ) . ;
+    ;               shift and go to state 27
+
+
+state 18
 
     (6) expr -> expr - . produit
     (10) produit -> . produit % facteur
     (11) produit -> . produit / facteur
     (12) produit -> . facteur
     (13) produit -> . produit * facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
-    ENTIER          shift and go to state 13
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
     (               shift and go to state 8
 
-    produit                        shift and go to state 24
+    produit                        shift and go to state 28
     facteur                        shift and go to state 12
 
-state 17
+state 19
 
     (9) expr -> expr + . produit
     (10) produit -> . produit % facteur
     (11) produit -> . produit / facteur
     (12) produit -> . facteur
     (13) produit -> . produit * facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
-    ENTIER          shift and go to state 13
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
     (               shift and go to state 8
 
-    produit                        shift and go to state 25
+    produit                        shift and go to state 29
     facteur                        shift and go to state 12
 
-state 18
+state 20
 
     (7) expr -> - facteur .
     )               reduce using rule 7 (expr -> - facteur .)
     -               reduce using rule 7 (expr -> - facteur .)
     +               reduce using rule 7 (expr -> - facteur .)
+    ,               reduce using rule 7 (expr -> - facteur .)
 
-
-state 19
-
-    (10) produit -> produit % . facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
-    ENTIER          shift and go to state 13
-    (               shift and go to state 8
-
-    facteur                        shift and go to state 26
-
-state 20
-
-    (11) produit -> produit / . facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
-    ENTIER          shift and go to state 13
-    (               shift and go to state 8
-
-    facteur                        shift and go to state 27
 
 state 21
 
-    (13) produit -> produit * . facteur
-    (14) facteur -> . ENTIER
-    (15) facteur -> . ( expr )
-    ENTIER          shift and go to state 13
+    (10) produit -> produit % . facteur
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
     (               shift and go to state 8
 
-    facteur                        shift and go to state 28
+    facteur                        shift and go to state 30
 
 state 22
 
-    (15) facteur -> ( expr ) .
-    %               reduce using rule 15 (facteur -> ( expr ) .)
-    /               reduce using rule 15 (facteur -> ( expr ) .)
-    *               reduce using rule 15 (facteur -> ( expr ) .)
-    )               reduce using rule 15 (facteur -> ( expr ) .)
-    -               reduce using rule 15 (facteur -> ( expr ) .)
-    +               reduce using rule 15 (facteur -> ( expr ) .)
+    (11) produit -> produit / . facteur
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
+    (               shift and go to state 8
 
+    facteur                        shift and go to state 31
 
 state 23
+
+    (13) produit -> produit * . facteur
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
+    (               shift and go to state 8
+
+    facteur                        shift and go to state 32
+
+state 24
+
+    (14) facteur -> IDENTIFIANT ( . argument )
+    (15) facteur -> IDENTIFIANT ( . )
+    (20) argument -> . expr
+    (21) argument -> . expr , argument
+    (6) expr -> . expr - produit
+    (7) expr -> . - facteur
+    (8) expr -> . produit
+    (9) expr -> . expr + produit
+    (10) produit -> . produit % facteur
+    (11) produit -> . produit / facteur
+    (12) produit -> . facteur
+    (13) produit -> . produit * facteur
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    )               shift and go to state 34
+    -               shift and go to state 10
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
+    (               shift and go to state 8
+
+    argument                       shift and go to state 33
+    expr                           shift and go to state 35
+    produit                        shift and go to state 11
+    facteur                        shift and go to state 12
+
+state 25
+
+    (17) facteur -> LIRE ( . )
+    )               shift and go to state 36
+
+
+state 26
+
+    (19) facteur -> ( expr ) .
+    %               reduce using rule 19 (facteur -> ( expr ) .)
+    /               reduce using rule 19 (facteur -> ( expr ) .)
+    *               reduce using rule 19 (facteur -> ( expr ) .)
+    )               reduce using rule 19 (facteur -> ( expr ) .)
+    -               reduce using rule 19 (facteur -> ( expr ) .)
+    +               reduce using rule 19 (facteur -> ( expr ) .)
+    ,               reduce using rule 19 (facteur -> ( expr ) .)
+
+
+state 27
 
     (5) ecrire -> ECRIRE ( expr ) ; .
     ECRIRE          reduce using rule 5 (ecrire -> ECRIRE ( expr ) ; .)
     $end            reduce using rule 5 (ecrire -> ECRIRE ( expr ) ; .)
 
 
-state 24
+state 28
 
     (6) expr -> expr - produit .
     (10) produit -> produit . % facteur
@@ -350,12 +468,13 @@ state 24
     )               reduce using rule 6 (expr -> expr - produit .)
     -               reduce using rule 6 (expr -> expr - produit .)
     +               reduce using rule 6 (expr -> expr - produit .)
-    %               shift and go to state 19
-    /               shift and go to state 20
-    *               shift and go to state 21
+    ,               reduce using rule 6 (expr -> expr - produit .)
+    %               shift and go to state 21
+    /               shift and go to state 22
+    *               shift and go to state 23
 
 
-state 25
+state 29
 
     (9) expr -> expr + produit .
     (10) produit -> produit . % facteur
@@ -364,12 +483,13 @@ state 25
     )               reduce using rule 9 (expr -> expr + produit .)
     -               reduce using rule 9 (expr -> expr + produit .)
     +               reduce using rule 9 (expr -> expr + produit .)
-    %               shift and go to state 19
-    /               shift and go to state 20
-    *               shift and go to state 21
+    ,               reduce using rule 9 (expr -> expr + produit .)
+    %               shift and go to state 21
+    /               shift and go to state 22
+    *               shift and go to state 23
 
 
-state 26
+state 30
 
     (10) produit -> produit % facteur .
     %               reduce using rule 10 (produit -> produit % facteur .)
@@ -378,9 +498,10 @@ state 26
     )               reduce using rule 10 (produit -> produit % facteur .)
     -               reduce using rule 10 (produit -> produit % facteur .)
     +               reduce using rule 10 (produit -> produit % facteur .)
+    ,               reduce using rule 10 (produit -> produit % facteur .)
 
 
-state 27
+state 31
 
     (11) produit -> produit / facteur .
     %               reduce using rule 11 (produit -> produit / facteur .)
@@ -389,9 +510,10 @@ state 27
     )               reduce using rule 11 (produit -> produit / facteur .)
     -               reduce using rule 11 (produit -> produit / facteur .)
     +               reduce using rule 11 (produit -> produit / facteur .)
+    ,               reduce using rule 11 (produit -> produit / facteur .)
 
 
-state 28
+state 32
 
     (13) produit -> produit * facteur .
     %               reduce using rule 13 (produit -> produit * facteur .)
@@ -400,3 +522,94 @@ state 28
     )               reduce using rule 13 (produit -> produit * facteur .)
     -               reduce using rule 13 (produit -> produit * facteur .)
     +               reduce using rule 13 (produit -> produit * facteur .)
+    ,               reduce using rule 13 (produit -> produit * facteur .)
+
+
+state 33
+
+    (14) facteur -> IDENTIFIANT ( argument . )
+    )               shift and go to state 37
+
+
+state 34
+
+    (15) facteur -> IDENTIFIANT ( ) .
+    %               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+    /               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+    *               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+    )               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+    -               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+    +               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+    ,               reduce using rule 15 (facteur -> IDENTIFIANT ( ) .)
+
+
+state 35
+
+    (20) argument -> expr .
+    (21) argument -> expr . , argument
+    (6) expr -> expr . - produit
+    (9) expr -> expr . + produit
+    )               reduce using rule 20 (argument -> expr .)
+    ,               shift and go to state 38
+    -               shift and go to state 18
+    +               shift and go to state 19
+
+
+state 36
+
+    (17) facteur -> LIRE ( ) .
+    %               reduce using rule 17 (facteur -> LIRE ( ) .)
+    /               reduce using rule 17 (facteur -> LIRE ( ) .)
+    *               reduce using rule 17 (facteur -> LIRE ( ) .)
+    )               reduce using rule 17 (facteur -> LIRE ( ) .)
+    -               reduce using rule 17 (facteur -> LIRE ( ) .)
+    +               reduce using rule 17 (facteur -> LIRE ( ) .)
+    ,               reduce using rule 17 (facteur -> LIRE ( ) .)
+
+
+state 37
+
+    (14) facteur -> IDENTIFIANT ( argument ) .
+    %               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+    /               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+    *               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+    )               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+    -               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+    +               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+    ,               reduce using rule 14 (facteur -> IDENTIFIANT ( argument ) .)
+
+
+state 38
+
+    (21) argument -> expr , . argument
+    (20) argument -> . expr
+    (21) argument -> . expr , argument
+    (6) expr -> . expr - produit
+    (7) expr -> . - facteur
+    (8) expr -> . produit
+    (9) expr -> . expr + produit
+    (10) produit -> . produit % facteur
+    (11) produit -> . produit / facteur
+    (12) produit -> . facteur
+    (13) produit -> . produit * facteur
+    (14) facteur -> . IDENTIFIANT ( argument )
+    (15) facteur -> . IDENTIFIANT ( )
+    (16) facteur -> . IDENTIFIANT
+    (17) facteur -> . LIRE ( )
+    (18) facteur -> . ENTIER
+    (19) facteur -> . ( expr )
+    -               shift and go to state 10
+    IDENTIFIANT     shift and go to state 13
+    LIRE            shift and go to state 14
+    ENTIER          shift and go to state 15
+    (               shift and go to state 8
+
+    expr                           shift and go to state 35
+    argument                       shift and go to state 39
+    produit                        shift and go to state 11
+    facteur                        shift and go to state 12
+
+state 39
+
+    (21) argument -> expr , argument .
+    )               reduce using rule 21 (argument -> expr , argument .)

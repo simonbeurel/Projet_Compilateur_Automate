@@ -52,3 +52,22 @@ class Entier:
 		self.valeur = valeur
 	def afficher(self,indent=0):
 		afficher("[Entier:"+str(self.valeur)+"]",indent)
+
+class Variable:
+	def __init__(self, nom):
+		self.nom = nom
+	def afficher(self,indent=0):
+		afficher("<Variable>", indent)
+		afficher(self.nom,indent+1)
+		afficher("</Variable>", indent)
+
+class nomFonction:
+	def __init__(self,nom,tab):
+		self.nom = nom
+		self.tab = tab
+	def afficher(self,indent=0):
+		afficher("<nomFonction>", indent)
+		afficher(self.nom,indent+1)
+		for element in self.tab:
+			element.afficher(indent+2)
+		afficher("</nomFonction>",indent)
