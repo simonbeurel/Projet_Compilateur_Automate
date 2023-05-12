@@ -1,77 +1,77 @@
 import sys
 from sly import Lexer
 
+
 class FloLexer(Lexer):
-	# Noms des lexèmes (sauf les litéraux). En majuscule. Ordre non important
-	tokens = { IDENTIFIANT,PORTE_OU, PORTE_ET, LIRE,  PORTE_NON, TANTQUE, RETOURNER, CONDITION_SI, CONDITION_SINON_SI, CONDITION_SINON, ENTIER, ECRIRE,INFERIEUR_OU_EGAL, BOOLEEN, EGAL_EGAL, AFFECTATION, DIFFERENT, INFERIEUR, SUPERIEUR, SUPERIEUR_OU_EGAL}
 
-	#Les caractères litéraux sont des caractères uniques qui sont retournés tel quel quand rencontré par l'analyse lexicale. 
-	#Les litéraux sont vérifiés en dernier, après toutes les autres règles définies par des expressions régulières.
-	#Donc, si une règle commence par un de ces littérals (comme INFERIEUR_OU_EGAL), cette règle aura la priorité.
-	literals = { '+', '(', ')', ";", '*', '/', '{', '}', '%', ',','-'}
-	
-	# chaines contenant les caractère à ignorer. Ici espace et tabulation
-	ignore = ' \t'
+    tokens = {  IDENTIFIANT, ENTIER, ECRIRE, LIRE, TYPE_ENTIER, TYPE_BOOLEEN,
+                INFERIEUR_EGAL, SUPERIEUR_EGAL, EGAL, NON_EGAL,
+                ET, OU, NON, VRAI, FAUX,
+                SI, SINON,TANT_QUE, RETOURNER,
+              }
 
-	# Expressions régulières correspondant au différents Lexèmes par ordre de priorité
-	INFERIEUR_OU_EGAL = r'<='
-	SUPERIEUR_OU_EGAL = r'>='
-	EGAL_EGAL= r'=='
-	DIFFERENT= r'!='
-	INFERIEUR= r'<'
-	SUPERIEUR= r'>'
-	AFFECTATION = r'='
 
-	# Portes logiques
-	PORTE_OU= r'ou'
-	PORTE_ET= r'et'
-	PORTE_NON= r'non'
+    literals = {'+', '-', '*', '/', '%', '(', ')', ";", '{', '}', '<', '>', '=', '!', ','}
+    ignore = ' \t'
+    ignore_comment = r'\#.*'
+    @_(r'0|[1-9][0-9]*')
+    def ENTIER(self, t):
+        t.value = int(t.value)
+        return t
 
-	@_(r'0|[1-9][0-9]*')
-	def ENTIER(self, t):
-		t.value = int(t.value)
-		return t
+    # Identifiants
+    IDENTIFIANT = r'[a-zA-Z][a-zA-Z0-9_]*' # pour nommer les variables et les fonctions
 
-	@_(r'Vrai|Faux')
-	def BOOLEEN(self,t):
-		if t=='Faux':
-			t.value="Faux"
-		else:
-			t.value="Vrai"
-		return t
+    # cas particulier
+    IDENTIFIANT['si'] = SI
 
-    	# cas général
-	IDENTIFIANT = r'[a-zA-Z][a-zA-Z0-9_]*' #en général, variable ou nom de fonction
+    IDENTIFIANT['sinon'] = SINON
+    IDENTIFIANT['tantque'] = TANT_QUE
+    IDENTIFIANT['lire'] = LIRE
+    IDENTIFIANT['ecrire'] = ECRIRE
+    IDENTIFIANT['et'] = ET
+    IDENTIFIANT['ou'] = OU
+    IDENTIFIANT['non'] = NON
+    IDENTIFIANT['Vrai'] = VRAI
+    IDENTIFIANT['Faux'] = FAUX
+    IDENTIFIANT['retourner'] = RETOURNER
 
-	# cas spéciaux:
-	IDENTIFIANT['ecrire'] = ECRIRE
-	IDENTIFIANT['lire'] = LIRE
+    # type
+    IDENTIFIANT['booleen'] = TYPE_BOOLEEN
+    IDENTIFIANT['entier'] = TYPE_ENTIER
 
-	IDENTIFIANT['si'] = CONDITION_SI
-	IDENTIFIANT['sinon si'] = CONDITION_SINON_SI
-	IDENTIFIANT['sinon'] = CONDITION_SINON
-	IDENTIFIANT['retourner'] = RETOURNER
-	IDENTIFIANT['tantque'] = TANTQUE
-	
-	#Syntaxe des commentaires à ignorer
-	ignore_comment = r'\#.*'
+    # Opérateurs
+    INFERIEUR_EGAL = r'<='
+    SUPERIEUR_EGAL = r'>='
+    EGAL = r'=='
+    NON_EGAL = r'!='
 
-	# Permet de conserver les numéros de ligne. Utile pour les messages d'erreurs
-	@_(r'\n+')
-	def ignore_newline(self, t):
-		self.lineno += t.value.count('\n')
+    # Instructions
 
-	# En cas d'erreur, indique où elle se trouve
-	def error(self, t):
-		print(f'Ligne{self.lineno}: caractère inattendu "{t.value[0]}"')
-		self.index += 1
+    # OPEN_PAR = r'\(' # a voir si on met
+    # CLOSE_PAR = r'\)' # a voir si on met
+    # OPEN_ACC = r'\{' # a voir si on met
+    # CLOSE_ACC = r'\}' # a voir si on met
+    # PVIRGULE = r';' # a voir si on met
+
+
+    # Permet de conserver les numéros de ligne. Utile pour les messages d'erreurs
+    @_(r'\n+')
+    def ignore_newline(self, t):
+        self.lineno += t.value.count('\n')
+
+    # En cas d'erreur, indique où elle se trouve
+    def error(self, t):
+        print(f'Ligne{self.lineno}: caractère inattendu "{t.value[0]}"')
+        self.index += 1
+
 
 if __name__ == '__main__':
-	if len(sys.argv) < 2:
-		print("usage: python3 analyse_lexicale.py NOM_FICHIER_SOURCE.flo")
-	else:
-		with open(sys.argv[1],"r") as f:
-			data = f.read()
-			lexer = FloLexer()
-			for tok in lexer.tokenize(data):
-				print(tok)
+    if len(sys.argv) < 2:
+        print("usage: python3 analyse_lexicale.py NOM_FICHIER_SOURCE.flo")
+    else:
+        with open(sys.argv[1], "r") as f:
+            data = f.read()
+            lexer = FloLexer()
+            for tok in lexer.tokenize(data):
+                print(tok)

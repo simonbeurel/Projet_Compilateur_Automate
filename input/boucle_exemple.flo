@@ -1,0 +1,12 @@
+tantQue(a < 100){
+    ecrire(a % 100);
+}
+ecrire(a);
+
+tantque(continuer){
+	entier a = max(lire(),5-12+23,47/13*6);
+	si(a % 10 != 0){
+		ecrire(a);
+		continuer = Faux;
+	}
+}

@@ -1,4 +1,5 @@
 import sys
+
 from sly import Parser
 from analyse_lexicale import FloLexer
 import arbre_abstrait
@@ -6,13 +7,60 @@ import arbre_abstrait
 class FloParser(Parser):
     # On récupère la liste des lexèmes de l'analyse lexicale
     tokens = FloLexer.tokens
-    debugfile = 'parser.out'
+
+    # gerer les precedences
+    precedence = (
+            ('left', 'ET'),
+            ('left','OU'),
+            ('right', 'NON'),
+            ('right', 'EGAL'),
+            ('left', '<', '>', 'INFERIEUR_EGAL', 'SUPERIEUR_EGAL', 'NON_EGAL'),
+            ('left', '+', '-'),
+            ('left', '*', '/', '%'),
+            ('nonassoc', 'UMINUS'),
+    )
 
     # Règles gramaticales et actions associées
 
     @_('listeInstructions')
     def prog(self, p):
-        return arbre_abstrait.Programme(p[0])
+        return arbre_abstrait.Programme(None,p[0])
+
+    @_('listeFonctions listeInstructions')
+    def prog(self, p):
+        return arbre_abstrait.Programme(p[0],p[1])
+
+    @_('fonction')
+    def listeFonctions(self, p):
+        l = arbre_abstrait.ListeFonctions()
+        l.fonctions.insert(0,p[0])
+        return l
+
+    @_('listeFonctions fonction')
+    def listeFonctions(self, p):
+        p[0].fonctions.insert(0,p[1])
+        return p[0]
+
+    @_('TYPE_ENTIER IDENTIFIANT "(" listeParametres ")" "{" listeInstructions "}"',
+       'TYPE_BOOLEEN IDENTIFIANT "(" listeParametres ")" "{" listeInstructions "}"')
+    def fonction(self, p):
+        return arbre_abstrait.Fonction(p[0],p.IDENTIFIANT,p.listeParametres,p.listeInstructions)
+
+    @_('parametre')
+    def listeParametres(self, p):
+        l = arbre_abstrait.ListeParametres()
+        l.parametres.append(p[0])
+        return l
+
+    @_('listeParametres "," parametre')
+    def listeParametres(self, p):
+        p[0].parametres.append(p[2])
+        return p[0]
+
+    @_('TYPE_ENTIER IDENTIFIANT',
+       'TYPE_BOOLEEN IDENTIFIANT')
+    def parametre(self, p):
+        return arbre_abstrait.Parametre(p[0],p.IDENTIFIANT)
 
     @_('instruction')
     def listeInstructions(self, p):
@@ -22,176 +70,157 @@ class FloParser(Parser):
 
     @_('instruction listeInstructions')
     def listeInstructions(self, p):
-        p[1].instructions.append(p[0])
+        p[1].instructions.insert(0,p[0])
         return p[1]
 
-    @_('ecrire')
+    @_('ecrire',
+       'declarationVariable',
+       'affectation',
+       'declarationAffectation',
+       'conditionnelle',
+       'boucleTantQue',
+       'retourner',
+       'appelFonction',)
     def instruction(self, p):
         return p[0]
 
-    @_('ECRIRE "(" expr ")" ";"')
+    @_('ECRIRE "(" exprAll ")" ";"')
     def ecrire(self, p):
-        return arbre_abstrait.Ecrire(p.expr)  # p.expr = p[2]
+        return arbre_abstrait.Ecrire(p.exprAll)
+
+    @_('TYPE_ENTIER IDENTIFIANT ";"',
+       'TYPE_BOOLEEN IDENTIFIANT ";"')
+    def declarationVariable(self, p):
+        return arbre_abstrait.DeclarationVariable(p[0],p.IDENTIFIANT)
+
+    @_('IDENTIFIANT "=" exprAll ";"')
+    def affectation(self, p):
+        return arbre_abstrait.Affectation(p.IDENTIFIANT,p.exprAll)
+
+    @_('TYPE_ENTIER IDENTIFIANT "=" exprAll ";"',
+         'TYPE_BOOLEEN IDENTIFIANT "=" exprAll ";"')
+    def declarationAffectation(self, p):
+        return arbre_abstrait.DeclarationAffectation(p[0],p.IDENTIFIANT,p.exprAll)
+
+    @_('SI "(" exprAll ")" "{" listeInstructions "}"',
+       'SI "(" exprAll ")" "{" listeInstructions "}" listeSinonSi',
+       'SI "(" exprAll ")" "{" listeInstructions "}" SINON "{" listeInstructions "}"',
+       'SI "(" exprAll ")" "{" listeInstructions "}" listeSinonSi SINON "{" listeInstructions "}"'
+       )
+    def conditionnelle(self, p):
+        if len(p) == 7:
+            return arbre_abstrait.Conditionnelle(p[2],p[5],None,None)
+        elif len(p) == 8:
+            return arbre_abstrait.Conditionnelle(p[2],p[5],p[7],None)
+        elif len(p) == 11:
+            return arbre_abstrait.Conditionnelle(p[2],p[5],None,p[9])
+        elif len(p) == 12:
+            return arbre_abstrait.Conditionnelle(p[2],p[5],p[7],p[10])
+
+
+    @_('listeSinonSi SINON SI "(" exprAll ")" "{" listeInstructions "}"')
+    def listeSinonSi(self, p):
+        return arbre_abstrait.Conditionnelle(p[4],p[7],p[0],None)
+
+    @_('SINON SI "(" exprAll ")" "{" listeInstructions "}"')
+    def listeSinonSi(self, p):
+        return arbre_abstrait.Conditionnelle(p[3],p[6],None,None)
+
+    @_('TANT_QUE "(" exprAll ")" "{" listeInstructions "}"')
+    def boucleTantQue(self, p):
+        return arbre_abstrait.BoucleTantQue(p[2],p[5])
+
+    @_("RETOURNER exprAll ';' ")
+    def retourner(self, p):
+        return arbre_abstrait.Retourner(p.exprAll)
+
+    @_('IDENTIFIANT "(" listeExpr ")" ";"')
+    def appelFonction(self, p):
+        return arbre_abstrait.AppelFonction(p.IDENTIFIANT,p.listeExpr)
+
+
+    @_('exprAll')
+    def listeExpr(self, p):
+        l = arbre_abstrait.ListeExpressions()
+        l.expressions.append(p[0])
+        return l
+
+    @_('exprAll "," listeExpr')
+    def listeExpr(self, p):
+        p[2].expressions.insert(0,p[0])
+        return p[2]
+
 
     @_('booleen')
-    def expr(self, p):
+    def exprAll(self, p):
         return p[0]
 
-    @_('BOOLEEN')
+    @_('VRAI',
+       'FAUX')
     def booleen(self, p):
         return arbre_abstrait.Booleen(p[0])
-    @_('somme')
-    def booleen(self,p):
-        return p[0]
-    @_('somme EGAL_EGAL somme')
-    def booleen(self, p):
-        return arbre_abstrait.Operation('==', p[0], p[2])
-    @_('somme DIFFERENT somme')
-    def booleen(self, p):
-        return arbre_abstrait.Operation('!=', p[0], p[2])
-    @_('somme INFERIEUR somme')
-    def booleen(self, p):
-        return arbre_abstrait.Operation('<', p[0], p[2])
-    @_('somme INFERIEUR_OU_EGAL somme')
-    def booleen(self, p):
-        return arbre_abstrait.Operation('<=', p[0], p[2])
-    @_('somme SUPERIEUR somme')
-    def booleen(self, p):
-        return arbre_abstrait.Operation('>', p[0], p[2])
-    @_('somme SUPERIEUR_OU_EGAL somme')
-    def booleen(self, p):
-        return arbre_abstrait.Operation('>=', p[0], p[2])
 
-    @_('produit')
-    def somme(self,p):
+    @_('expr')
+    def booleen(self, p):
         return p[0]
-    @_('expr "-" produit')
-    def somme(self,p):
-        return arbre_abstrait.Operation('-', p[0], p[2])
-    @_('expr "+" produit')
-    def somme(self, p):
-        return arbre_abstrait.Operation('+', p[0], p[2])
-    @_('"-" facteur')
-    def somme(self, p):
-        return arbre_abstrait.Operation('-', arbre_abstrait.Entier(0), p[1])
 
-    @_('facteur')
-    def produit(self, p):
-        return p[0]
-    @_('produit "*" facteur')
-    def produit(self, p):
-        return arbre_abstrait.Operation('*', p[0], p[2])
-    @_('produit "/" facteur')
-    def produit(self, p):
-        return arbre_abstrait.Operation('/', p[0], p[2])
-    @_('produit "%" facteur')
-    def produit(self, p):
-        return arbre_abstrait.Operation('%', p[0], p[2])
+    @_('booleen ET booleen',
+       'booleen OU booleen')
+    def booleen(self, p):
+        return arbre_abstrait.Operation(p[1],p[0],p[2])
 
+    @_('NON booleen')
+    def booleen(self, p):
+        return arbre_abstrait.Operation(p[0],p[1],None)
 
-    @_('variable')
-    def facteur(self, p):
-        return p[0]
-    @_('IDENTIFIANT "(" argument ")" ')
-    def facteur(self, p):
-        return arbre_abstrait.nomFonction(p[0], p[2])
-    @_('IDENTIFIANT "(" ")"')
-    def facteur(self, p):
-        return arbre_abstrait.nomFonction(p[0], [])
-    @_('LIRE "(" ")"')
-    def facteur(self, p):
-        return arbre_abstrait.Lire()
+    @_('"-" expr %prec UMINUS')
+    def expr(self, p):
+        return arbre_abstrait.Operation("*",arbre_abstrait.Entier(-1),p.expr) #p.expr = p[1]
+
+    @_('expr "+" expr',
+       'expr "-" expr',
+       'expr "*" expr',
+       'expr "/" expr',
+       'expr "%" expr',
+       'expr "<" expr',
+       'expr ">" expr',
+       'expr EGAL expr',
+       'expr NON_EGAL expr',
+       'expr INFERIEUR_EGAL expr',
+       'expr SUPERIEUR_EGAL expr',)
+    def expr(self, p):
+        return arbre_abstrait.Operation(p[1],p[0],p[2])
+
+    @_('"(" booleen ")"')
+    def expr(self, p):
+        return p[1]
+
     @_('ENTIER')
     def facteur(self, p):
-        return arbre_abstrait.Entier(p.ENTIER)
-    @_('"(" expr ")"')
-    def facteur(self, p):
-        return p.expr
-
+        return arbre_abstrait.Entier(p.ENTIER) #p.ENTIER = p[0]
 
     @_('IDENTIFIANT')
-    def variable(self, p):
-        return arbre_abstrait.Variable(p[0])
-
-
-    @_('expr "," argument')
-    def argument(self, p):
-        return [p[0]] + p[2]
-    @_('expr')
-    def argument(self, p):
-        return [p[0]]
-
-
-    '''
-    @_('ECRIRE "(" expr ")" ";"')
-    def ecrire(self, p):
-        return arbre_abstrait.Ecrire(p.expr)  # p.expr = p[2]
-
-    @_('expr "+" produit')
-    def expr(self, p):
-        return arbre_abstrait.Operation('+', p[0], p[2])
-
-    @_('produit "*" facteur')
-    def produit(self, p):
-        return arbre_abstrait.Operation('*', p[0], p[2])
-
-    @_('"(" expr ")"')
     def facteur(self, p):
-        return p.expr  # ou p[1]
+        return arbre_abstrait.Variable(p.IDENTIFIANT)
 
-    @_('ENTIER')
-    def facteur(self, p):
-        return arbre_abstrait.Entier(p.ENTIER)  # p.ENTIER = p[0]
 
     @_('facteur')
-    def produit(self, p):
+    def expr(self,p):
         return p[0]
-
-    @_('produit')
-    def expr(self, p):
-        return p[0]
-
-    @_('produit "/" facteur')
-    def produit(self, p):
-        return arbre_abstrait.Operation('/', p[0], p[2])
-
-    @_('"-" facteur')
-    def expr(self, p):
-        return arbre_abstrait.Operation('-', arbre_abstrait.Entier(0), p[1])
-
-    @_('produit "%" facteur')
-    def produit(self, p):
-        return arbre_abstrait.Operation('%', p[0], p[2])
-
-    @_('expr "-" produit')
-    def expr(self, p):
-        return arbre_abstrait.Operation('-', p[0], p[2])
 
     @_('LIRE "(" ")"')
-    def facteur(self, p):
-        return arbre_abstrait.Lire();
-
-    @_('IDENTIFIANT ')
     def facteur(self,p):
-        return arbre_abstrait.Variable(p[0])
+        return arbre_abstrait.Lire()
+
+    @_('IDENTIFIANT "(" listeExpr ")"')
+    def facteur(self,p):
+        return arbre_abstrait.AppelFonction(p.IDENTIFIANT,p.listeExpr)
 
     @_('IDENTIFIANT "(" ")"')
     def facteur(self,p):
-        return arbre_abstrait.nomFonction(p[0],[])
+        return arbre_abstrait.AppelFonction(p.IDENTIFIANT,arbre_abstrait.ListeExpressions())
 
-    
-    @_('expr "," argument')
-    def argument(self,p):
-        return [p[0]]+p[2]
 
-    @_('expr')
-    def argument(self, p):
-        return [p[0]]
-
-    @_('IDENTIFIANT "(" argument ")"')
-    def facteur(self,p):
-        return arbre_abstrait.nomFonction(p[0],p[2])
-    '''
 
 
 if __name__ == '__main__':
@@ -200,7 +229,7 @@ if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("usage: python3 analyse_syntaxique.py NOM_FICHIER_SOURCE.flo")
     else:
-        with open(sys.argv[1], "r") as f:
+        with open(sys.argv[1],"r") as f:
             data = f.read()
             try:
                 arbre = parser.parse(lexer.tokenize(data))

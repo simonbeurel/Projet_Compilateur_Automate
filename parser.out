@@ -6,91 +6,95 @@ Rule 2     listeInstructions -> instruction listeInstructions
 Rule 3     listeInstructions -> instruction
 Rule 4     instruction -> ecrire
 Rule 5     ecrire -> ECRIRE ( expr ) ;
-Rule 6     expr -> booleen
-Rule 7     booleen -> somme SUPERIEUR_OU_EGAL somme
-Rule 8     booleen -> somme SUPERIEUR somme
-Rule 9     booleen -> somme INFERIEUR_OU_EGAL somme
-Rule 10    booleen -> somme INFERIEUR somme
-Rule 11    booleen -> somme DIFFERENT somme
-Rule 12    booleen -> somme EGAL_EGAL somme
-Rule 13    booleen -> somme
-Rule 14    booleen -> BOOLEEN
-Rule 15    somme -> - facteur
-Rule 16    somme -> expr + produit
-Rule 17    somme -> expr - produit
-Rule 18    somme -> produit
-Rule 19    produit -> produit % facteur
-Rule 20    produit -> produit / facteur
-Rule 21    produit -> produit * facteur
-Rule 22    produit -> facteur
-Rule 23    facteur -> ( expr )
-Rule 24    facteur -> ENTIER
-Rule 25    facteur -> LIRE ( )
-Rule 26    facteur -> IDENTIFIANT ( )
-Rule 27    facteur -> IDENTIFIANT ( argument )
-Rule 28    facteur -> variable
-Rule 29    variable -> IDENTIFIANT
-Rule 30    argument -> expr
-Rule 31    argument -> expr , argument
+Rule 6     expr -> ouOp
+Rule 7     ouOp -> expr PORTE_OU expr
+Rule 8     ouOp -> nonOp
+Rule 9     nonOp -> PORTE_NON booleen
+Rule 10    nonOp -> booleen
+Rule 11    booleen -> somme SUPERIEUR_OU_EGAL somme
+Rule 12    booleen -> somme SUPERIEUR somme
+Rule 13    booleen -> somme INFERIEUR_OU_EGAL somme
+Rule 14    booleen -> somme INFERIEUR somme
+Rule 15    booleen -> somme DIFFERENT somme
+Rule 16    booleen -> somme EGAL_EGAL somme
+Rule 17    booleen -> somme
+Rule 18    booleen -> BOOLEEN
+Rule 19    somme -> - facteur
+Rule 20    somme -> expr + produit
+Rule 21    somme -> expr - produit
+Rule 22    somme -> produit
+Rule 23    produit -> produit % facteur
+Rule 24    produit -> produit / facteur
+Rule 25    produit -> produit * facteur
+Rule 26    produit -> facteur
+Rule 27    facteur -> ( expr )
+Rule 28    facteur -> ENTIER
+Rule 29    facteur -> LIRE ( )
+Rule 30    facteur -> IDENTIFIANT ( )
+Rule 31    facteur -> IDENTIFIANT ( argument )
+Rule 32    facteur -> variable
+Rule 33    variable -> IDENTIFIANT
+Rule 34    argument -> expr
+Rule 35    argument -> expr , argument
 
 Unused terminals:
 
+    PORTE_ET
     CONDITION_SI
     TANTQUE
-    CONDITION_SINON_SI
-    PORTE_NON
-    PORTE_ET
     AFFECTATION
+    CONDITION_SINON_SI
     CONDITION_SINON
-    PORTE_OU
     RETOURNER
 
 Terminals, with rules where they appear:
 
-%                    : 19
-(                    : 5 23 25 26 27
-)                    : 5 23 25 26 27
-*                    : 21
-+                    : 16
-,                    : 31
--                    : 15 17
-/                    : 20
+%                    : 23
+(                    : 5 27 29 30 31
+)                    : 5 27 29 30 31
+*                    : 25
++                    : 20
+,                    : 35
+-                    : 19 21
+/                    : 24
 ;                    : 5
 AFFECTATION          : 
-BOOLEEN              : 14
+BOOLEEN              : 18
 CONDITION_SI         : 
 CONDITION_SINON      : 
 CONDITION_SINON_SI   : 
-DIFFERENT            : 11
+DIFFERENT            : 15
 ECRIRE               : 5
-EGAL_EGAL            : 12
-ENTIER               : 24
-IDENTIFIANT          : 26 27 29
-INFERIEUR            : 10
-INFERIEUR_OU_EGAL    : 9
-LIRE                 : 25
+EGAL_EGAL            : 16
+ENTIER               : 28
+IDENTIFIANT          : 30 31 33
+INFERIEUR            : 14
+INFERIEUR_OU_EGAL    : 13
+LIRE                 : 29
 PORTE_ET             : 
-PORTE_NON            : 
-PORTE_OU             : 
+PORTE_NON            : 9
+PORTE_OU             : 7
 RETOURNER            : 
-SUPERIEUR            : 8
-SUPERIEUR_OU_EGAL    : 7
+SUPERIEUR            : 12
+SUPERIEUR_OU_EGAL    : 11
 TANTQUE              : 
 error                : 
 
 Nonterminals, with rules where they appear:
 
-argument             : 27 31
-booleen              : 6
+argument             : 31 35
+booleen              : 9 10
 ecrire               : 4
-expr                 : 5 16 17 23 30 31
-facteur              : 15 19 20 21 22
+expr                 : 5 7 7 20 21 27 34 35
+facteur              : 19 23 24 25 26
 instruction          : 2 3
 listeInstructions    : 1 2
-produit              : 16 17 18 19 20 21
+nonOp                : 8
+ouOp                 : 6
+produit              : 20 21 22 23 24 25
 prog                 : 0
-somme                : 7 7 8 8 9 9 10 10 11 11 12 12 13
-variable             : 28
+somme                : 11 11 12 12 13 13 14 14 15 15 16 16 17
+variable             : 32
 
 
 state 0
@@ -156,1089 +160,1348 @@ state 6
 state 7
 
     (5) ecrire -> ECRIRE ( . expr ) ;
-    (6) expr -> . booleen
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    BOOLEEN         shift and go to state 12
-    -               shift and go to state 13
+    (6) expr -> . ouOp
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
 
     expr                           shift and go to state 9
-    booleen                        shift and go to state 10
-    somme                          shift and go to state 11
-    facteur                        shift and go to state 14
-    produit                        shift and go to state 15
-    variable                       shift and go to state 19
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    booleen                        shift and go to state 13
+    somme                          shift and go to state 14
+    facteur                        shift and go to state 17
+    produit                        shift and go to state 18
+    variable                       shift and go to state 22
 
 state 8
 
-    (23) facteur -> ( . expr )
-    (6) expr -> . booleen
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    BOOLEEN         shift and go to state 12
-    -               shift and go to state 13
+    (27) facteur -> ( . expr )
+    (6) expr -> . ouOp
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
 
-    expr                           shift and go to state 20
-    booleen                        shift and go to state 10
-    somme                          shift and go to state 11
-    facteur                        shift and go to state 14
-    produit                        shift and go to state 15
-    variable                       shift and go to state 19
+    expr                           shift and go to state 23
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    booleen                        shift and go to state 13
+    somme                          shift and go to state 14
+    facteur                        shift and go to state 17
+    produit                        shift and go to state 18
+    variable                       shift and go to state 22
 
 state 9
 
     (5) ecrire -> ECRIRE ( expr . ) ;
-    (16) somme -> expr . + produit
-    (17) somme -> expr . - produit
-    )               shift and go to state 21
-    +               shift and go to state 22
-    -               shift and go to state 23
+    (7) ouOp -> expr . PORTE_OU expr
+    (20) somme -> expr . + produit
+    (21) somme -> expr . - produit
+    )               shift and go to state 24
+    PORTE_OU        shift and go to state 25
+    +               shift and go to state 26
+    -               shift and go to state 27
 
 
 state 10
 
-    (6) expr -> booleen .
-    )               reduce using rule 6 (expr -> booleen .)
-    +               reduce using rule 6 (expr -> booleen .)
-    -               reduce using rule 6 (expr -> booleen .)
-    ,               reduce using rule 6 (expr -> booleen .)
+    (6) expr -> ouOp .
+    )               reduce using rule 6 (expr -> ouOp .)
+    PORTE_OU        reduce using rule 6 (expr -> ouOp .)
+    +               reduce using rule 6 (expr -> ouOp .)
+    -               reduce using rule 6 (expr -> ouOp .)
+    ,               reduce using rule 6 (expr -> ouOp .)
 
 
 state 11
 
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    )               reduce using rule 13 (booleen -> somme .)
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
-    ,               reduce using rule 13 (booleen -> somme .)
+    (8) ouOp -> nonOp .
+    )               reduce using rule 8 (ouOp -> nonOp .)
+    PORTE_OU        reduce using rule 8 (ouOp -> nonOp .)
+    +               reduce using rule 8 (ouOp -> nonOp .)
+    -               reduce using rule 8 (ouOp -> nonOp .)
+    ,               reduce using rule 8 (ouOp -> nonOp .)
 
 
 state 12
 
-    (14) booleen -> BOOLEEN .
-    )               reduce using rule 14 (booleen -> BOOLEEN .)
-    +               reduce using rule 14 (booleen -> BOOLEEN .)
-    -               reduce using rule 14 (booleen -> BOOLEEN .)
-    ,               reduce using rule 14 (booleen -> BOOLEEN .)
+    (9) nonOp -> PORTE_NON . booleen
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    BOOLEEN         shift and go to state 15
+    -               shift and go to state 16
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
 
+    booleen                        shift and go to state 28
+    somme                          shift and go to state 14
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
 
 state 13
 
-    (15) somme -> - . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (10) nonOp -> booleen .
+    )               reduce using rule 10 (nonOp -> booleen .)
+    PORTE_OU        reduce using rule 10 (nonOp -> booleen .)
+    +               reduce using rule 10 (nonOp -> booleen .)
+    -               reduce using rule 10 (nonOp -> booleen .)
+    ,               reduce using rule 10 (nonOp -> booleen .)
 
-    facteur                        shift and go to state 30
-    variable                       shift and go to state 19
 
 state 14
 
-    (22) produit -> facteur .
-    %               reduce using rule 22 (produit -> facteur .)
-    /               reduce using rule 22 (produit -> facteur .)
-    *               reduce using rule 22 (produit -> facteur .)
-    SUPERIEUR_OU_EGAL reduce using rule 22 (produit -> facteur .)
-    SUPERIEUR       reduce using rule 22 (produit -> facteur .)
-    INFERIEUR_OU_EGAL reduce using rule 22 (produit -> facteur .)
-    INFERIEUR       reduce using rule 22 (produit -> facteur .)
-    DIFFERENT       reduce using rule 22 (produit -> facteur .)
-    EGAL_EGAL       reduce using rule 22 (produit -> facteur .)
-    )               reduce using rule 22 (produit -> facteur .)
-    +               reduce using rule 22 (produit -> facteur .)
-    -               reduce using rule 22 (produit -> facteur .)
-    ,               reduce using rule 22 (produit -> facteur .)
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    )               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    ,               reduce using rule 17 (booleen -> somme .)
 
 
 state 15
 
-    (18) somme -> produit .
-    (19) produit -> produit . % facteur
-    (20) produit -> produit . / facteur
-    (21) produit -> produit . * facteur
-    SUPERIEUR_OU_EGAL reduce using rule 18 (somme -> produit .)
-    SUPERIEUR       reduce using rule 18 (somme -> produit .)
-    INFERIEUR_OU_EGAL reduce using rule 18 (somme -> produit .)
-    INFERIEUR       reduce using rule 18 (somme -> produit .)
-    DIFFERENT       reduce using rule 18 (somme -> produit .)
-    EGAL_EGAL       reduce using rule 18 (somme -> produit .)
-    )               reduce using rule 18 (somme -> produit .)
-    +               reduce using rule 18 (somme -> produit .)
-    -               reduce using rule 18 (somme -> produit .)
-    ,               reduce using rule 18 (somme -> produit .)
-    %               shift and go to state 31
-    /               shift and go to state 32
-    *               shift and go to state 33
+    (18) booleen -> BOOLEEN .
+    )               reduce using rule 18 (booleen -> BOOLEEN .)
+    PORTE_OU        reduce using rule 18 (booleen -> BOOLEEN .)
+    +               reduce using rule 18 (booleen -> BOOLEEN .)
+    -               reduce using rule 18 (booleen -> BOOLEEN .)
+    ,               reduce using rule 18 (booleen -> BOOLEEN .)
 
 
 state 16
 
-    (24) facteur -> ENTIER .
-    %               reduce using rule 24 (facteur -> ENTIER .)
-    /               reduce using rule 24 (facteur -> ENTIER .)
-    *               reduce using rule 24 (facteur -> ENTIER .)
-    SUPERIEUR_OU_EGAL reduce using rule 24 (facteur -> ENTIER .)
-    SUPERIEUR       reduce using rule 24 (facteur -> ENTIER .)
-    INFERIEUR_OU_EGAL reduce using rule 24 (facteur -> ENTIER .)
-    INFERIEUR       reduce using rule 24 (facteur -> ENTIER .)
-    DIFFERENT       reduce using rule 24 (facteur -> ENTIER .)
-    EGAL_EGAL       reduce using rule 24 (facteur -> ENTIER .)
-    )               reduce using rule 24 (facteur -> ENTIER .)
-    +               reduce using rule 24 (facteur -> ENTIER .)
-    -               reduce using rule 24 (facteur -> ENTIER .)
-    ,               reduce using rule 24 (facteur -> ENTIER .)
+    (19) somme -> - . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
 
+    facteur                        shift and go to state 36
+    variable                       shift and go to state 22
 
 state 17
 
-    (25) facteur -> LIRE . ( )
-    (               shift and go to state 34
+    (26) produit -> facteur .
+    %               reduce using rule 26 (produit -> facteur .)
+    /               reduce using rule 26 (produit -> facteur .)
+    *               reduce using rule 26 (produit -> facteur .)
+    SUPERIEUR_OU_EGAL reduce using rule 26 (produit -> facteur .)
+    SUPERIEUR       reduce using rule 26 (produit -> facteur .)
+    INFERIEUR_OU_EGAL reduce using rule 26 (produit -> facteur .)
+    INFERIEUR       reduce using rule 26 (produit -> facteur .)
+    DIFFERENT       reduce using rule 26 (produit -> facteur .)
+    EGAL_EGAL       reduce using rule 26 (produit -> facteur .)
+    )               reduce using rule 26 (produit -> facteur .)
+    PORTE_OU        reduce using rule 26 (produit -> facteur .)
+    +               reduce using rule 26 (produit -> facteur .)
+    -               reduce using rule 26 (produit -> facteur .)
+    ,               reduce using rule 26 (produit -> facteur .)
 
 
 state 18
 
-    (26) facteur -> IDENTIFIANT . ( )
-    (27) facteur -> IDENTIFIANT . ( argument )
-    (29) variable -> IDENTIFIANT .
-    (               shift and go to state 35
-    %               reduce using rule 29 (variable -> IDENTIFIANT .)
-    /               reduce using rule 29 (variable -> IDENTIFIANT .)
-    *               reduce using rule 29 (variable -> IDENTIFIANT .)
-    SUPERIEUR_OU_EGAL reduce using rule 29 (variable -> IDENTIFIANT .)
-    SUPERIEUR       reduce using rule 29 (variable -> IDENTIFIANT .)
-    INFERIEUR_OU_EGAL reduce using rule 29 (variable -> IDENTIFIANT .)
-    INFERIEUR       reduce using rule 29 (variable -> IDENTIFIANT .)
-    DIFFERENT       reduce using rule 29 (variable -> IDENTIFIANT .)
-    EGAL_EGAL       reduce using rule 29 (variable -> IDENTIFIANT .)
-    )               reduce using rule 29 (variable -> IDENTIFIANT .)
-    +               reduce using rule 29 (variable -> IDENTIFIANT .)
-    -               reduce using rule 29 (variable -> IDENTIFIANT .)
-    ,               reduce using rule 29 (variable -> IDENTIFIANT .)
+    (22) somme -> produit .
+    (23) produit -> produit . % facteur
+    (24) produit -> produit . / facteur
+    (25) produit -> produit . * facteur
+    SUPERIEUR_OU_EGAL reduce using rule 22 (somme -> produit .)
+    SUPERIEUR       reduce using rule 22 (somme -> produit .)
+    INFERIEUR_OU_EGAL reduce using rule 22 (somme -> produit .)
+    INFERIEUR       reduce using rule 22 (somme -> produit .)
+    DIFFERENT       reduce using rule 22 (somme -> produit .)
+    EGAL_EGAL       reduce using rule 22 (somme -> produit .)
+    )               reduce using rule 22 (somme -> produit .)
+    PORTE_OU        reduce using rule 22 (somme -> produit .)
+    +               reduce using rule 22 (somme -> produit .)
+    -               reduce using rule 22 (somme -> produit .)
+    ,               reduce using rule 22 (somme -> produit .)
+    %               shift and go to state 37
+    /               shift and go to state 38
+    *               shift and go to state 39
 
 
 state 19
 
-    (28) facteur -> variable .
-    %               reduce using rule 28 (facteur -> variable .)
-    /               reduce using rule 28 (facteur -> variable .)
-    *               reduce using rule 28 (facteur -> variable .)
-    SUPERIEUR_OU_EGAL reduce using rule 28 (facteur -> variable .)
-    SUPERIEUR       reduce using rule 28 (facteur -> variable .)
-    INFERIEUR_OU_EGAL reduce using rule 28 (facteur -> variable .)
-    INFERIEUR       reduce using rule 28 (facteur -> variable .)
-    DIFFERENT       reduce using rule 28 (facteur -> variable .)
-    EGAL_EGAL       reduce using rule 28 (facteur -> variable .)
-    )               reduce using rule 28 (facteur -> variable .)
-    +               reduce using rule 28 (facteur -> variable .)
-    -               reduce using rule 28 (facteur -> variable .)
-    ,               reduce using rule 28 (facteur -> variable .)
+    (28) facteur -> ENTIER .
+    %               reduce using rule 28 (facteur -> ENTIER .)
+    /               reduce using rule 28 (facteur -> ENTIER .)
+    *               reduce using rule 28 (facteur -> ENTIER .)
+    SUPERIEUR_OU_EGAL reduce using rule 28 (facteur -> ENTIER .)
+    SUPERIEUR       reduce using rule 28 (facteur -> ENTIER .)
+    INFERIEUR_OU_EGAL reduce using rule 28 (facteur -> ENTIER .)
+    INFERIEUR       reduce using rule 28 (facteur -> ENTIER .)
+    DIFFERENT       reduce using rule 28 (facteur -> ENTIER .)
+    EGAL_EGAL       reduce using rule 28 (facteur -> ENTIER .)
+    )               reduce using rule 28 (facteur -> ENTIER .)
+    PORTE_OU        reduce using rule 28 (facteur -> ENTIER .)
+    +               reduce using rule 28 (facteur -> ENTIER .)
+    -               reduce using rule 28 (facteur -> ENTIER .)
+    ,               reduce using rule 28 (facteur -> ENTIER .)
 
 
 state 20
 
-    (23) facteur -> ( expr . )
-    (16) somme -> expr . + produit
-    (17) somme -> expr . - produit
-    )               shift and go to state 36
-    +               shift and go to state 22
-    -               shift and go to state 23
+    (29) facteur -> LIRE . ( )
+    (               shift and go to state 40
 
 
 state 21
 
-    (5) ecrire -> ECRIRE ( expr ) . ;
-    ;               shift and go to state 37
+    (30) facteur -> IDENTIFIANT . ( )
+    (31) facteur -> IDENTIFIANT . ( argument )
+    (33) variable -> IDENTIFIANT .
+    (               shift and go to state 41
+    %               reduce using rule 33 (variable -> IDENTIFIANT .)
+    /               reduce using rule 33 (variable -> IDENTIFIANT .)
+    *               reduce using rule 33 (variable -> IDENTIFIANT .)
+    SUPERIEUR_OU_EGAL reduce using rule 33 (variable -> IDENTIFIANT .)
+    SUPERIEUR       reduce using rule 33 (variable -> IDENTIFIANT .)
+    INFERIEUR_OU_EGAL reduce using rule 33 (variable -> IDENTIFIANT .)
+    INFERIEUR       reduce using rule 33 (variable -> IDENTIFIANT .)
+    DIFFERENT       reduce using rule 33 (variable -> IDENTIFIANT .)
+    EGAL_EGAL       reduce using rule 33 (variable -> IDENTIFIANT .)
+    )               reduce using rule 33 (variable -> IDENTIFIANT .)
+    PORTE_OU        reduce using rule 33 (variable -> IDENTIFIANT .)
+    +               reduce using rule 33 (variable -> IDENTIFIANT .)
+    -               reduce using rule 33 (variable -> IDENTIFIANT .)
+    ,               reduce using rule 33 (variable -> IDENTIFIANT .)
 
 
 state 22
 
-    (16) somme -> expr + . produit
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (32) facteur -> variable .
+    %               reduce using rule 32 (facteur -> variable .)
+    /               reduce using rule 32 (facteur -> variable .)
+    *               reduce using rule 32 (facteur -> variable .)
+    SUPERIEUR_OU_EGAL reduce using rule 32 (facteur -> variable .)
+    SUPERIEUR       reduce using rule 32 (facteur -> variable .)
+    INFERIEUR_OU_EGAL reduce using rule 32 (facteur -> variable .)
+    INFERIEUR       reduce using rule 32 (facteur -> variable .)
+    DIFFERENT       reduce using rule 32 (facteur -> variable .)
+    EGAL_EGAL       reduce using rule 32 (facteur -> variable .)
+    )               reduce using rule 32 (facteur -> variable .)
+    PORTE_OU        reduce using rule 32 (facteur -> variable .)
+    +               reduce using rule 32 (facteur -> variable .)
+    -               reduce using rule 32 (facteur -> variable .)
+    ,               reduce using rule 32 (facteur -> variable .)
 
-    produit                        shift and go to state 38
-    facteur                        shift and go to state 14
-    variable                       shift and go to state 19
 
 state 23
 
-    (17) somme -> expr - . produit
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (27) facteur -> ( expr . )
+    (7) ouOp -> expr . PORTE_OU expr
+    (20) somme -> expr . + produit
+    (21) somme -> expr . - produit
+    )               shift and go to state 42
+    PORTE_OU        shift and go to state 25
+    +               shift and go to state 26
+    -               shift and go to state 27
 
-    produit                        shift and go to state 39
-    facteur                        shift and go to state 14
-    variable                       shift and go to state 19
 
 state 24
 
-    (7) booleen -> somme SUPERIEUR_OU_EGAL . somme
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (6) expr -> . booleen
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    -               shift and go to state 13
-    BOOLEEN         shift and go to state 12
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (5) ecrire -> ECRIRE ( expr ) . ;
+    ;               shift and go to state 43
 
-    somme                          shift and go to state 40
-    facteur                        shift and go to state 14
-    expr                           shift and go to state 41
-    produit                        shift and go to state 15
-    booleen                        shift and go to state 10
-    variable                       shift and go to state 19
 
 state 25
 
-    (8) booleen -> somme SUPERIEUR . somme
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (6) expr -> . booleen
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    -               shift and go to state 13
-    BOOLEEN         shift and go to state 12
+    (7) ouOp -> expr PORTE_OU . expr
+    (6) expr -> . ouOp
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
 
-    somme                          shift and go to state 42
-    facteur                        shift and go to state 14
-    expr                           shift and go to state 41
-    produit                        shift and go to state 15
-    booleen                        shift and go to state 10
-    variable                       shift and go to state 19
+    expr                           shift and go to state 44
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    booleen                        shift and go to state 13
+    somme                          shift and go to state 14
+    facteur                        shift and go to state 17
+    produit                        shift and go to state 18
+    variable                       shift and go to state 22
 
 state 26
 
-    (9) booleen -> somme INFERIEUR_OU_EGAL . somme
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (6) expr -> . booleen
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    -               shift and go to state 13
-    BOOLEEN         shift and go to state 12
+    (20) somme -> expr + . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
 
-    somme                          shift and go to state 43
-    facteur                        shift and go to state 14
-    expr                           shift and go to state 41
-    produit                        shift and go to state 15
-    booleen                        shift and go to state 10
-    variable                       shift and go to state 19
+    produit                        shift and go to state 45
+    facteur                        shift and go to state 17
+    variable                       shift and go to state 22
 
 state 27
 
-    (10) booleen -> somme INFERIEUR . somme
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (6) expr -> . booleen
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    -               shift and go to state 13
-    BOOLEEN         shift and go to state 12
+    (21) somme -> expr - . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
 
-    somme                          shift and go to state 44
-    facteur                        shift and go to state 14
-    expr                           shift and go to state 41
-    produit                        shift and go to state 15
-    booleen                        shift and go to state 10
-    variable                       shift and go to state 19
+    produit                        shift and go to state 46
+    facteur                        shift and go to state 17
+    variable                       shift and go to state 22
 
 state 28
 
-    (11) booleen -> somme DIFFERENT . somme
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (6) expr -> . booleen
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    -               shift and go to state 13
-    BOOLEEN         shift and go to state 12
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (9) nonOp -> PORTE_NON booleen .
+    (10) nonOp -> booleen .
+  ! reduce/reduce conflict for + resolved using rule 10 (nonOp -> booleen .)
+  ! reduce/reduce conflict for - resolved using rule 10 (nonOp -> booleen .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 10 (nonOp -> booleen .)
+    )               reduce using rule 9 (nonOp -> PORTE_NON booleen .)
+    ,               reduce using rule 9 (nonOp -> PORTE_NON booleen .)
+    +               reduce using rule 10 (nonOp -> booleen .)
+    -               reduce using rule 10 (nonOp -> booleen .)
+    PORTE_OU        reduce using rule 10 (nonOp -> booleen .)
 
-    somme                          shift and go to state 45
-    facteur                        shift and go to state 14
-    expr                           shift and go to state 41
-    produit                        shift and go to state 15
-    booleen                        shift and go to state 10
-    variable                       shift and go to state 19
 
 state 29
 
-    (12) booleen -> somme EGAL_EGAL . somme
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (6) expr -> . booleen
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    -               shift and go to state 13
-    BOOLEEN         shift and go to state 12
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (20) somme -> expr . + produit
+    (21) somme -> expr . - produit
+    (7) ouOp -> expr . PORTE_OU expr
+    +               shift and go to state 26
+    -               shift and go to state 27
+    PORTE_OU        shift and go to state 25
 
-    somme                          shift and go to state 46
-    facteur                        shift and go to state 14
-    expr                           shift and go to state 41
-    produit                        shift and go to state 15
-    booleen                        shift and go to state 10
-    variable                       shift and go to state 19
 
 state 30
 
-    (15) somme -> - facteur .
-    SUPERIEUR_OU_EGAL reduce using rule 15 (somme -> - facteur .)
-    SUPERIEUR       reduce using rule 15 (somme -> - facteur .)
-    INFERIEUR_OU_EGAL reduce using rule 15 (somme -> - facteur .)
-    INFERIEUR       reduce using rule 15 (somme -> - facteur .)
-    DIFFERENT       reduce using rule 15 (somme -> - facteur .)
-    EGAL_EGAL       reduce using rule 15 (somme -> - facteur .)
-    )               reduce using rule 15 (somme -> - facteur .)
-    +               reduce using rule 15 (somme -> - facteur .)
-    -               reduce using rule 15 (somme -> - facteur .)
-    ,               reduce using rule 15 (somme -> - facteur .)
+    (11) booleen -> somme SUPERIEUR_OU_EGAL . somme
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    -               shift and go to state 16
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
 
+    somme                          shift and go to state 47
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
+    booleen                        shift and go to state 13
 
 state 31
 
-    (19) produit -> produit % . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
+    (12) booleen -> somme SUPERIEUR . somme
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
 
-    facteur                        shift and go to state 47
-    variable                       shift and go to state 19
+    somme                          shift and go to state 48
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
+    booleen                        shift and go to state 13
 
 state 32
 
-    (20) produit -> produit / . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
+    (13) booleen -> somme INFERIEUR_OU_EGAL . somme
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
 
-    facteur                        shift and go to state 48
-    variable                       shift and go to state 19
+    somme                          shift and go to state 49
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
+    booleen                        shift and go to state 13
 
 state 33
 
-    (21) produit -> produit * . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
+    (14) booleen -> somme INFERIEUR . somme
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
 
-    facteur                        shift and go to state 49
-    variable                       shift and go to state 19
+    somme                          shift and go to state 50
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
+    booleen                        shift and go to state 13
 
 state 34
 
-    (25) facteur -> LIRE ( . )
-    )               shift and go to state 50
+    (15) booleen -> somme DIFFERENT . somme
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    -               shift and go to state 16
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
 
+    somme                          shift and go to state 51
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
+    booleen                        shift and go to state 13
 
 state 35
 
-    (26) facteur -> IDENTIFIANT ( . )
-    (27) facteur -> IDENTIFIANT ( . argument )
-    (30) argument -> . expr
-    (31) argument -> . expr , argument
-    (6) expr -> . booleen
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    )               shift and go to state 51
-    BOOLEEN         shift and go to state 12
-    -               shift and go to state 13
+    (16) booleen -> somme EGAL_EGAL . somme
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (6) expr -> . ouOp
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (33) variable -> . IDENTIFIANT
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    -               shift and go to state 16
     (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
 
-    argument                       shift and go to state 52
-    expr                           shift and go to state 53
-    booleen                        shift and go to state 10
-    somme                          shift and go to state 11
-    facteur                        shift and go to state 14
-    produit                        shift and go to state 15
-    variable                       shift and go to state 19
+    somme                          shift and go to state 52
+    facteur                        shift and go to state 17
+    expr                           shift and go to state 29
+    produit                        shift and go to state 18
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    variable                       shift and go to state 22
+    booleen                        shift and go to state 13
 
 state 36
 
-    (23) facteur -> ( expr ) .
-    %               reduce using rule 23 (facteur -> ( expr ) .)
-    /               reduce using rule 23 (facteur -> ( expr ) .)
-    *               reduce using rule 23 (facteur -> ( expr ) .)
-    SUPERIEUR_OU_EGAL reduce using rule 23 (facteur -> ( expr ) .)
-    SUPERIEUR       reduce using rule 23 (facteur -> ( expr ) .)
-    INFERIEUR_OU_EGAL reduce using rule 23 (facteur -> ( expr ) .)
-    INFERIEUR       reduce using rule 23 (facteur -> ( expr ) .)
-    DIFFERENT       reduce using rule 23 (facteur -> ( expr ) .)
-    EGAL_EGAL       reduce using rule 23 (facteur -> ( expr ) .)
-    )               reduce using rule 23 (facteur -> ( expr ) .)
-    +               reduce using rule 23 (facteur -> ( expr ) .)
-    -               reduce using rule 23 (facteur -> ( expr ) .)
-    ,               reduce using rule 23 (facteur -> ( expr ) .)
+    (19) somme -> - facteur .
+    SUPERIEUR_OU_EGAL reduce using rule 19 (somme -> - facteur .)
+    SUPERIEUR       reduce using rule 19 (somme -> - facteur .)
+    INFERIEUR_OU_EGAL reduce using rule 19 (somme -> - facteur .)
+    INFERIEUR       reduce using rule 19 (somme -> - facteur .)
+    DIFFERENT       reduce using rule 19 (somme -> - facteur .)
+    EGAL_EGAL       reduce using rule 19 (somme -> - facteur .)
+    )               reduce using rule 19 (somme -> - facteur .)
+    PORTE_OU        reduce using rule 19 (somme -> - facteur .)
+    +               reduce using rule 19 (somme -> - facteur .)
+    -               reduce using rule 19 (somme -> - facteur .)
+    ,               reduce using rule 19 (somme -> - facteur .)
 
 
 state 37
+
+    (23) produit -> produit % . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+
+    facteur                        shift and go to state 53
+    variable                       shift and go to state 22
+
+state 38
+
+    (24) produit -> produit / . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+
+    facteur                        shift and go to state 54
+    variable                       shift and go to state 22
+
+state 39
+
+    (25) produit -> produit * . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+
+    facteur                        shift and go to state 55
+    variable                       shift and go to state 22
+
+state 40
+
+    (29) facteur -> LIRE ( . )
+    )               shift and go to state 56
+
+
+state 41
+
+    (30) facteur -> IDENTIFIANT ( . )
+    (31) facteur -> IDENTIFIANT ( . argument )
+    (34) argument -> . expr
+    (35) argument -> . expr , argument
+    (6) expr -> . ouOp
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    )               shift and go to state 57
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
+    -               shift and go to state 16
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+
+    argument                       shift and go to state 58
+    expr                           shift and go to state 59
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    booleen                        shift and go to state 13
+    somme                          shift and go to state 14
+    facteur                        shift and go to state 17
+    produit                        shift and go to state 18
+    variable                       shift and go to state 22
+
+state 42
+
+    (27) facteur -> ( expr ) .
+    %               reduce using rule 27 (facteur -> ( expr ) .)
+    /               reduce using rule 27 (facteur -> ( expr ) .)
+    *               reduce using rule 27 (facteur -> ( expr ) .)
+    SUPERIEUR_OU_EGAL reduce using rule 27 (facteur -> ( expr ) .)
+    SUPERIEUR       reduce using rule 27 (facteur -> ( expr ) .)
+    INFERIEUR_OU_EGAL reduce using rule 27 (facteur -> ( expr ) .)
+    INFERIEUR       reduce using rule 27 (facteur -> ( expr ) .)
+    DIFFERENT       reduce using rule 27 (facteur -> ( expr ) .)
+    EGAL_EGAL       reduce using rule 27 (facteur -> ( expr ) .)
+    )               reduce using rule 27 (facteur -> ( expr ) .)
+    PORTE_OU        reduce using rule 27 (facteur -> ( expr ) .)
+    +               reduce using rule 27 (facteur -> ( expr ) .)
+    -               reduce using rule 27 (facteur -> ( expr ) .)
+    ,               reduce using rule 27 (facteur -> ( expr ) .)
+
+
+state 43
 
     (5) ecrire -> ECRIRE ( expr ) ; .
     ECRIRE          reduce using rule 5 (ecrire -> ECRIRE ( expr ) ; .)
     $end            reduce using rule 5 (ecrire -> ECRIRE ( expr ) ; .)
 
 
-state 38
-
-    (16) somme -> expr + produit .
-    (19) produit -> produit . % facteur
-    (20) produit -> produit . / facteur
-    (21) produit -> produit . * facteur
-    SUPERIEUR_OU_EGAL reduce using rule 16 (somme -> expr + produit .)
-    SUPERIEUR       reduce using rule 16 (somme -> expr + produit .)
-    INFERIEUR_OU_EGAL reduce using rule 16 (somme -> expr + produit .)
-    INFERIEUR       reduce using rule 16 (somme -> expr + produit .)
-    DIFFERENT       reduce using rule 16 (somme -> expr + produit .)
-    EGAL_EGAL       reduce using rule 16 (somme -> expr + produit .)
-    )               reduce using rule 16 (somme -> expr + produit .)
-    +               reduce using rule 16 (somme -> expr + produit .)
-    -               reduce using rule 16 (somme -> expr + produit .)
-    ,               reduce using rule 16 (somme -> expr + produit .)
-    %               shift and go to state 31
-    /               shift and go to state 32
-    *               shift and go to state 33
-
-
-state 39
-
-    (17) somme -> expr - produit .
-    (19) produit -> produit . % facteur
-    (20) produit -> produit . / facteur
-    (21) produit -> produit . * facteur
-    SUPERIEUR_OU_EGAL reduce using rule 17 (somme -> expr - produit .)
-    SUPERIEUR       reduce using rule 17 (somme -> expr - produit .)
-    INFERIEUR_OU_EGAL reduce using rule 17 (somme -> expr - produit .)
-    INFERIEUR       reduce using rule 17 (somme -> expr - produit .)
-    DIFFERENT       reduce using rule 17 (somme -> expr - produit .)
-    EGAL_EGAL       reduce using rule 17 (somme -> expr - produit .)
-    )               reduce using rule 17 (somme -> expr - produit .)
-    +               reduce using rule 17 (somme -> expr - produit .)
-    -               reduce using rule 17 (somme -> expr - produit .)
-    ,               reduce using rule 17 (somme -> expr - produit .)
-    %               shift and go to state 31
-    /               shift and go to state 32
-    *               shift and go to state 33
-
-
-state 40
-
-    (7) booleen -> somme SUPERIEUR_OU_EGAL somme .
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-  ! reduce/reduce conflict for + resolved using rule 13 (booleen -> somme .)
-  ! reduce/reduce conflict for - resolved using rule 13 (booleen -> somme .)
-    )               reduce using rule 7 (booleen -> somme SUPERIEUR_OU_EGAL somme .)
-    ,               reduce using rule 7 (booleen -> somme SUPERIEUR_OU_EGAL somme .)
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
-
-
-state 41
-
-    (16) somme -> expr . + produit
-    (17) somme -> expr . - produit
-    +               shift and go to state 22
-    -               shift and go to state 23
-
-
-state 42
-
-    (8) booleen -> somme SUPERIEUR somme .
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-  ! reduce/reduce conflict for + resolved using rule 13 (booleen -> somme .)
-  ! reduce/reduce conflict for - resolved using rule 13 (booleen -> somme .)
-    )               reduce using rule 8 (booleen -> somme SUPERIEUR somme .)
-    ,               reduce using rule 8 (booleen -> somme SUPERIEUR somme .)
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
-
-
-state 43
-
-    (9) booleen -> somme INFERIEUR_OU_EGAL somme .
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-  ! reduce/reduce conflict for + resolved using rule 13 (booleen -> somme .)
-  ! reduce/reduce conflict for - resolved using rule 13 (booleen -> somme .)
-    )               reduce using rule 9 (booleen -> somme INFERIEUR_OU_EGAL somme .)
-    ,               reduce using rule 9 (booleen -> somme INFERIEUR_OU_EGAL somme .)
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
-
-
 state 44
 
-    (10) booleen -> somme INFERIEUR somme .
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-  ! reduce/reduce conflict for + resolved using rule 13 (booleen -> somme .)
-  ! reduce/reduce conflict for - resolved using rule 13 (booleen -> somme .)
-    )               reduce using rule 10 (booleen -> somme INFERIEUR somme .)
-    ,               reduce using rule 10 (booleen -> somme INFERIEUR somme .)
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
+    (7) ouOp -> expr PORTE_OU expr .
+    (7) ouOp -> expr . PORTE_OU expr
+    (20) somme -> expr . + produit
+    (21) somme -> expr . - produit
+  ! shift/reduce conflict for PORTE_OU resolved as shift
+  ! shift/reduce conflict for + resolved as shift
+  ! shift/reduce conflict for - resolved as shift
+    )               reduce using rule 7 (ouOp -> expr PORTE_OU expr .)
+    ,               reduce using rule 7 (ouOp -> expr PORTE_OU expr .)
+    PORTE_OU        shift and go to state 25
+    +               shift and go to state 26
+    -               shift and go to state 27
 
 
 state 45
 
-    (11) booleen -> somme DIFFERENT somme .
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-  ! reduce/reduce conflict for + resolved using rule 13 (booleen -> somme .)
-  ! reduce/reduce conflict for - resolved using rule 13 (booleen -> somme .)
-    )               reduce using rule 11 (booleen -> somme DIFFERENT somme .)
-    ,               reduce using rule 11 (booleen -> somme DIFFERENT somme .)
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
+    (20) somme -> expr + produit .
+    (23) produit -> produit . % facteur
+    (24) produit -> produit . / facteur
+    (25) produit -> produit . * facteur
+    SUPERIEUR_OU_EGAL reduce using rule 20 (somme -> expr + produit .)
+    SUPERIEUR       reduce using rule 20 (somme -> expr + produit .)
+    INFERIEUR_OU_EGAL reduce using rule 20 (somme -> expr + produit .)
+    INFERIEUR       reduce using rule 20 (somme -> expr + produit .)
+    DIFFERENT       reduce using rule 20 (somme -> expr + produit .)
+    EGAL_EGAL       reduce using rule 20 (somme -> expr + produit .)
+    )               reduce using rule 20 (somme -> expr + produit .)
+    PORTE_OU        reduce using rule 20 (somme -> expr + produit .)
+    +               reduce using rule 20 (somme -> expr + produit .)
+    -               reduce using rule 20 (somme -> expr + produit .)
+    ,               reduce using rule 20 (somme -> expr + produit .)
+    %               shift and go to state 37
+    /               shift and go to state 38
+    *               shift and go to state 39
 
 
 state 46
 
-    (12) booleen -> somme EGAL_EGAL somme .
-    (7) booleen -> somme . SUPERIEUR_OU_EGAL somme
-    (8) booleen -> somme . SUPERIEUR somme
-    (9) booleen -> somme . INFERIEUR_OU_EGAL somme
-    (10) booleen -> somme . INFERIEUR somme
-    (11) booleen -> somme . DIFFERENT somme
-    (12) booleen -> somme . EGAL_EGAL somme
-    (13) booleen -> somme .
-  ! reduce/reduce conflict for + resolved using rule 13 (booleen -> somme .)
-  ! reduce/reduce conflict for - resolved using rule 13 (booleen -> somme .)
-    )               reduce using rule 12 (booleen -> somme EGAL_EGAL somme .)
-    ,               reduce using rule 12 (booleen -> somme EGAL_EGAL somme .)
-    SUPERIEUR_OU_EGAL shift and go to state 24
-    SUPERIEUR       shift and go to state 25
-    INFERIEUR_OU_EGAL shift and go to state 26
-    INFERIEUR       shift and go to state 27
-    DIFFERENT       shift and go to state 28
-    EGAL_EGAL       shift and go to state 29
-    +               reduce using rule 13 (booleen -> somme .)
-    -               reduce using rule 13 (booleen -> somme .)
+    (21) somme -> expr - produit .
+    (23) produit -> produit . % facteur
+    (24) produit -> produit . / facteur
+    (25) produit -> produit . * facteur
+    SUPERIEUR_OU_EGAL reduce using rule 21 (somme -> expr - produit .)
+    SUPERIEUR       reduce using rule 21 (somme -> expr - produit .)
+    INFERIEUR_OU_EGAL reduce using rule 21 (somme -> expr - produit .)
+    INFERIEUR       reduce using rule 21 (somme -> expr - produit .)
+    DIFFERENT       reduce using rule 21 (somme -> expr - produit .)
+    EGAL_EGAL       reduce using rule 21 (somme -> expr - produit .)
+    )               reduce using rule 21 (somme -> expr - produit .)
+    PORTE_OU        reduce using rule 21 (somme -> expr - produit .)
+    +               reduce using rule 21 (somme -> expr - produit .)
+    -               reduce using rule 21 (somme -> expr - produit .)
+    ,               reduce using rule 21 (somme -> expr - produit .)
+    %               shift and go to state 37
+    /               shift and go to state 38
+    *               shift and go to state 39
 
 
 state 47
 
-    (19) produit -> produit % facteur .
-    %               reduce using rule 19 (produit -> produit % facteur .)
-    /               reduce using rule 19 (produit -> produit % facteur .)
-    *               reduce using rule 19 (produit -> produit % facteur .)
-    SUPERIEUR_OU_EGAL reduce using rule 19 (produit -> produit % facteur .)
-    SUPERIEUR       reduce using rule 19 (produit -> produit % facteur .)
-    INFERIEUR_OU_EGAL reduce using rule 19 (produit -> produit % facteur .)
-    INFERIEUR       reduce using rule 19 (produit -> produit % facteur .)
-    DIFFERENT       reduce using rule 19 (produit -> produit % facteur .)
-    EGAL_EGAL       reduce using rule 19 (produit -> produit % facteur .)
-    )               reduce using rule 19 (produit -> produit % facteur .)
-    +               reduce using rule 19 (produit -> produit % facteur .)
-    -               reduce using rule 19 (produit -> produit % facteur .)
-    ,               reduce using rule 19 (produit -> produit % facteur .)
+    (11) booleen -> somme SUPERIEUR_OU_EGAL somme .
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+  ! reduce/reduce conflict for + resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for - resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 17 (booleen -> somme .)
+    )               reduce using rule 11 (booleen -> somme SUPERIEUR_OU_EGAL somme .)
+    ,               reduce using rule 11 (booleen -> somme SUPERIEUR_OU_EGAL somme .)
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
 
 
 state 48
 
-    (20) produit -> produit / facteur .
-    %               reduce using rule 20 (produit -> produit / facteur .)
-    /               reduce using rule 20 (produit -> produit / facteur .)
-    *               reduce using rule 20 (produit -> produit / facteur .)
-    SUPERIEUR_OU_EGAL reduce using rule 20 (produit -> produit / facteur .)
-    SUPERIEUR       reduce using rule 20 (produit -> produit / facteur .)
-    INFERIEUR_OU_EGAL reduce using rule 20 (produit -> produit / facteur .)
-    INFERIEUR       reduce using rule 20 (produit -> produit / facteur .)
-    DIFFERENT       reduce using rule 20 (produit -> produit / facteur .)
-    EGAL_EGAL       reduce using rule 20 (produit -> produit / facteur .)
-    )               reduce using rule 20 (produit -> produit / facteur .)
-    +               reduce using rule 20 (produit -> produit / facteur .)
-    -               reduce using rule 20 (produit -> produit / facteur .)
-    ,               reduce using rule 20 (produit -> produit / facteur .)
+    (12) booleen -> somme SUPERIEUR somme .
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+  ! reduce/reduce conflict for + resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for - resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 17 (booleen -> somme .)
+    )               reduce using rule 12 (booleen -> somme SUPERIEUR somme .)
+    ,               reduce using rule 12 (booleen -> somme SUPERIEUR somme .)
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
 
 
 state 49
 
-    (21) produit -> produit * facteur .
-    %               reduce using rule 21 (produit -> produit * facteur .)
-    /               reduce using rule 21 (produit -> produit * facteur .)
-    *               reduce using rule 21 (produit -> produit * facteur .)
-    SUPERIEUR_OU_EGAL reduce using rule 21 (produit -> produit * facteur .)
-    SUPERIEUR       reduce using rule 21 (produit -> produit * facteur .)
-    INFERIEUR_OU_EGAL reduce using rule 21 (produit -> produit * facteur .)
-    INFERIEUR       reduce using rule 21 (produit -> produit * facteur .)
-    DIFFERENT       reduce using rule 21 (produit -> produit * facteur .)
-    EGAL_EGAL       reduce using rule 21 (produit -> produit * facteur .)
-    )               reduce using rule 21 (produit -> produit * facteur .)
-    +               reduce using rule 21 (produit -> produit * facteur .)
-    -               reduce using rule 21 (produit -> produit * facteur .)
-    ,               reduce using rule 21 (produit -> produit * facteur .)
+    (13) booleen -> somme INFERIEUR_OU_EGAL somme .
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+  ! reduce/reduce conflict for + resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for - resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 17 (booleen -> somme .)
+    )               reduce using rule 13 (booleen -> somme INFERIEUR_OU_EGAL somme .)
+    ,               reduce using rule 13 (booleen -> somme INFERIEUR_OU_EGAL somme .)
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
 
 
 state 50
 
-    (25) facteur -> LIRE ( ) .
-    %               reduce using rule 25 (facteur -> LIRE ( ) .)
-    /               reduce using rule 25 (facteur -> LIRE ( ) .)
-    *               reduce using rule 25 (facteur -> LIRE ( ) .)
-    SUPERIEUR_OU_EGAL reduce using rule 25 (facteur -> LIRE ( ) .)
-    SUPERIEUR       reduce using rule 25 (facteur -> LIRE ( ) .)
-    INFERIEUR_OU_EGAL reduce using rule 25 (facteur -> LIRE ( ) .)
-    INFERIEUR       reduce using rule 25 (facteur -> LIRE ( ) .)
-    DIFFERENT       reduce using rule 25 (facteur -> LIRE ( ) .)
-    EGAL_EGAL       reduce using rule 25 (facteur -> LIRE ( ) .)
-    )               reduce using rule 25 (facteur -> LIRE ( ) .)
-    +               reduce using rule 25 (facteur -> LIRE ( ) .)
-    -               reduce using rule 25 (facteur -> LIRE ( ) .)
-    ,               reduce using rule 25 (facteur -> LIRE ( ) .)
+    (14) booleen -> somme INFERIEUR somme .
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+  ! reduce/reduce conflict for + resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for - resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 17 (booleen -> somme .)
+    )               reduce using rule 14 (booleen -> somme INFERIEUR somme .)
+    ,               reduce using rule 14 (booleen -> somme INFERIEUR somme .)
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
 
 
 state 51
 
-    (26) facteur -> IDENTIFIANT ( ) .
-    %               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    /               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    *               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    SUPERIEUR_OU_EGAL reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    SUPERIEUR       reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    INFERIEUR_OU_EGAL reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    INFERIEUR       reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    DIFFERENT       reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    EGAL_EGAL       reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    )               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    +               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    -               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
-    ,               reduce using rule 26 (facteur -> IDENTIFIANT ( ) .)
+    (15) booleen -> somme DIFFERENT somme .
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+  ! reduce/reduce conflict for + resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for - resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 17 (booleen -> somme .)
+    )               reduce using rule 15 (booleen -> somme DIFFERENT somme .)
+    ,               reduce using rule 15 (booleen -> somme DIFFERENT somme .)
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
 
 
 state 52
 
-    (27) facteur -> IDENTIFIANT ( argument . )
-    )               shift and go to state 54
+    (16) booleen -> somme EGAL_EGAL somme .
+    (11) booleen -> somme . SUPERIEUR_OU_EGAL somme
+    (12) booleen -> somme . SUPERIEUR somme
+    (13) booleen -> somme . INFERIEUR_OU_EGAL somme
+    (14) booleen -> somme . INFERIEUR somme
+    (15) booleen -> somme . DIFFERENT somme
+    (16) booleen -> somme . EGAL_EGAL somme
+    (17) booleen -> somme .
+  ! reduce/reduce conflict for + resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for - resolved using rule 17 (booleen -> somme .)
+  ! reduce/reduce conflict for PORTE_OU resolved using rule 17 (booleen -> somme .)
+    )               reduce using rule 16 (booleen -> somme EGAL_EGAL somme .)
+    ,               reduce using rule 16 (booleen -> somme EGAL_EGAL somme .)
+    SUPERIEUR_OU_EGAL shift and go to state 30
+    SUPERIEUR       shift and go to state 31
+    INFERIEUR_OU_EGAL shift and go to state 32
+    INFERIEUR       shift and go to state 33
+    DIFFERENT       shift and go to state 34
+    EGAL_EGAL       shift and go to state 35
+    +               reduce using rule 17 (booleen -> somme .)
+    -               reduce using rule 17 (booleen -> somme .)
+    PORTE_OU        reduce using rule 17 (booleen -> somme .)
 
 
 state 53
 
-    (30) argument -> expr .
-    (31) argument -> expr . , argument
-    (16) somme -> expr . + produit
-    (17) somme -> expr . - produit
-    )               reduce using rule 30 (argument -> expr .)
-    ,               shift and go to state 55
-    +               shift and go to state 22
-    -               shift and go to state 23
+    (23) produit -> produit % facteur .
+    %               reduce using rule 23 (produit -> produit % facteur .)
+    /               reduce using rule 23 (produit -> produit % facteur .)
+    *               reduce using rule 23 (produit -> produit % facteur .)
+    SUPERIEUR_OU_EGAL reduce using rule 23 (produit -> produit % facteur .)
+    SUPERIEUR       reduce using rule 23 (produit -> produit % facteur .)
+    INFERIEUR_OU_EGAL reduce using rule 23 (produit -> produit % facteur .)
+    INFERIEUR       reduce using rule 23 (produit -> produit % facteur .)
+    DIFFERENT       reduce using rule 23 (produit -> produit % facteur .)
+    EGAL_EGAL       reduce using rule 23 (produit -> produit % facteur .)
+    )               reduce using rule 23 (produit -> produit % facteur .)
+    PORTE_OU        reduce using rule 23 (produit -> produit % facteur .)
+    +               reduce using rule 23 (produit -> produit % facteur .)
+    -               reduce using rule 23 (produit -> produit % facteur .)
+    ,               reduce using rule 23 (produit -> produit % facteur .)
 
 
 state 54
 
-    (27) facteur -> IDENTIFIANT ( argument ) .
-    %               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    /               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    *               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    SUPERIEUR_OU_EGAL reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    SUPERIEUR       reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    INFERIEUR_OU_EGAL reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    INFERIEUR       reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    DIFFERENT       reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    EGAL_EGAL       reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    )               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    +               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    -               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
-    ,               reduce using rule 27 (facteur -> IDENTIFIANT ( argument ) .)
+    (24) produit -> produit / facteur .
+    %               reduce using rule 24 (produit -> produit / facteur .)
+    /               reduce using rule 24 (produit -> produit / facteur .)
+    *               reduce using rule 24 (produit -> produit / facteur .)
+    SUPERIEUR_OU_EGAL reduce using rule 24 (produit -> produit / facteur .)
+    SUPERIEUR       reduce using rule 24 (produit -> produit / facteur .)
+    INFERIEUR_OU_EGAL reduce using rule 24 (produit -> produit / facteur .)
+    INFERIEUR       reduce using rule 24 (produit -> produit / facteur .)
+    DIFFERENT       reduce using rule 24 (produit -> produit / facteur .)
+    EGAL_EGAL       reduce using rule 24 (produit -> produit / facteur .)
+    )               reduce using rule 24 (produit -> produit / facteur .)
+    PORTE_OU        reduce using rule 24 (produit -> produit / facteur .)
+    +               reduce using rule 24 (produit -> produit / facteur .)
+    -               reduce using rule 24 (produit -> produit / facteur .)
+    ,               reduce using rule 24 (produit -> produit / facteur .)
 
 
 state 55
 
-    (31) argument -> expr , . argument
-    (30) argument -> . expr
-    (31) argument -> . expr , argument
-    (6) expr -> . booleen
-    (7) booleen -> . somme SUPERIEUR_OU_EGAL somme
-    (8) booleen -> . somme SUPERIEUR somme
-    (9) booleen -> . somme INFERIEUR_OU_EGAL somme
-    (10) booleen -> . somme INFERIEUR somme
-    (11) booleen -> . somme DIFFERENT somme
-    (12) booleen -> . somme EGAL_EGAL somme
-    (13) booleen -> . somme
-    (14) booleen -> . BOOLEEN
-    (15) somme -> . - facteur
-    (16) somme -> . expr + produit
-    (17) somme -> . expr - produit
-    (18) somme -> . produit
-    (19) produit -> . produit % facteur
-    (20) produit -> . produit / facteur
-    (21) produit -> . produit * facteur
-    (22) produit -> . facteur
-    (23) facteur -> . ( expr )
-    (24) facteur -> . ENTIER
-    (25) facteur -> . LIRE ( )
-    (26) facteur -> . IDENTIFIANT ( )
-    (27) facteur -> . IDENTIFIANT ( argument )
-    (28) facteur -> . variable
-    (29) variable -> . IDENTIFIANT
-    BOOLEEN         shift and go to state 12
-    -               shift and go to state 13
-    (               shift and go to state 8
-    ENTIER          shift and go to state 16
-    LIRE            shift and go to state 17
-    IDENTIFIANT     shift and go to state 18
+    (25) produit -> produit * facteur .
+    %               reduce using rule 25 (produit -> produit * facteur .)
+    /               reduce using rule 25 (produit -> produit * facteur .)
+    *               reduce using rule 25 (produit -> produit * facteur .)
+    SUPERIEUR_OU_EGAL reduce using rule 25 (produit -> produit * facteur .)
+    SUPERIEUR       reduce using rule 25 (produit -> produit * facteur .)
+    INFERIEUR_OU_EGAL reduce using rule 25 (produit -> produit * facteur .)
+    INFERIEUR       reduce using rule 25 (produit -> produit * facteur .)
+    DIFFERENT       reduce using rule 25 (produit -> produit * facteur .)
+    EGAL_EGAL       reduce using rule 25 (produit -> produit * facteur .)
+    )               reduce using rule 25 (produit -> produit * facteur .)
+    PORTE_OU        reduce using rule 25 (produit -> produit * facteur .)
+    +               reduce using rule 25 (produit -> produit * facteur .)
+    -               reduce using rule 25 (produit -> produit * facteur .)
+    ,               reduce using rule 25 (produit -> produit * facteur .)
 
-    expr                           shift and go to state 53
-    argument                       shift and go to state 56
-    booleen                        shift and go to state 10
-    somme                          shift and go to state 11
-    facteur                        shift and go to state 14
-    produit                        shift and go to state 15
-    variable                       shift and go to state 19
 
 state 56
 
-    (31) argument -> expr , argument .
-    )               reduce using rule 31 (argument -> expr , argument .)
+    (29) facteur -> LIRE ( ) .
+    %               reduce using rule 29 (facteur -> LIRE ( ) .)
+    /               reduce using rule 29 (facteur -> LIRE ( ) .)
+    *               reduce using rule 29 (facteur -> LIRE ( ) .)
+    SUPERIEUR_OU_EGAL reduce using rule 29 (facteur -> LIRE ( ) .)
+    SUPERIEUR       reduce using rule 29 (facteur -> LIRE ( ) .)
+    INFERIEUR_OU_EGAL reduce using rule 29 (facteur -> LIRE ( ) .)
+    INFERIEUR       reduce using rule 29 (facteur -> LIRE ( ) .)
+    DIFFERENT       reduce using rule 29 (facteur -> LIRE ( ) .)
+    EGAL_EGAL       reduce using rule 29 (facteur -> LIRE ( ) .)
+    )               reduce using rule 29 (facteur -> LIRE ( ) .)
+    PORTE_OU        reduce using rule 29 (facteur -> LIRE ( ) .)
+    +               reduce using rule 29 (facteur -> LIRE ( ) .)
+    -               reduce using rule 29 (facteur -> LIRE ( ) .)
+    ,               reduce using rule 29 (facteur -> LIRE ( ) .)
+
+
+state 57
+
+    (30) facteur -> IDENTIFIANT ( ) .
+    %               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    /               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    *               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    SUPERIEUR_OU_EGAL reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    SUPERIEUR       reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    INFERIEUR_OU_EGAL reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    INFERIEUR       reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    DIFFERENT       reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    EGAL_EGAL       reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    )               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    PORTE_OU        reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    +               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    -               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+    ,               reduce using rule 30 (facteur -> IDENTIFIANT ( ) .)
+
+
+state 58
+
+    (31) facteur -> IDENTIFIANT ( argument . )
+    )               shift and go to state 60
+
+
+state 59
+
+    (34) argument -> expr .
+    (35) argument -> expr . , argument
+    (7) ouOp -> expr . PORTE_OU expr
+    (20) somme -> expr . + produit
+    (21) somme -> expr . - produit
+    )               reduce using rule 34 (argument -> expr .)
+    ,               shift and go to state 61
+    PORTE_OU        shift and go to state 25
+    +               shift and go to state 26
+    -               shift and go to state 27
+
+
+state 60
+
+    (31) facteur -> IDENTIFIANT ( argument ) .
+    %               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    /               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    *               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    SUPERIEUR_OU_EGAL reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    SUPERIEUR       reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    INFERIEUR_OU_EGAL reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    INFERIEUR       reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    DIFFERENT       reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    EGAL_EGAL       reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    )               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    PORTE_OU        reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    +               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    -               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+    ,               reduce using rule 31 (facteur -> IDENTIFIANT ( argument ) .)
+
+
+state 61
+
+    (35) argument -> expr , . argument
+    (34) argument -> . expr
+    (35) argument -> . expr , argument
+    (6) expr -> . ouOp
+    (7) ouOp -> . expr PORTE_OU expr
+    (8) ouOp -> . nonOp
+    (9) nonOp -> . PORTE_NON booleen
+    (10) nonOp -> . booleen
+    (11) booleen -> . somme SUPERIEUR_OU_EGAL somme
+    (12) booleen -> . somme SUPERIEUR somme
+    (13) booleen -> . somme INFERIEUR_OU_EGAL somme
+    (14) booleen -> . somme INFERIEUR somme
+    (15) booleen -> . somme DIFFERENT somme
+    (16) booleen -> . somme EGAL_EGAL somme
+    (17) booleen -> . somme
+    (18) booleen -> . BOOLEEN
+    (19) somme -> . - facteur
+    (20) somme -> . expr + produit
+    (21) somme -> . expr - produit
+    (22) somme -> . produit
+    (23) produit -> . produit % facteur
+    (24) produit -> . produit / facteur
+    (25) produit -> . produit * facteur
+    (26) produit -> . facteur
+    (27) facteur -> . ( expr )
+    (28) facteur -> . ENTIER
+    (29) facteur -> . LIRE ( )
+    (30) facteur -> . IDENTIFIANT ( )
+    (31) facteur -> . IDENTIFIANT ( argument )
+    (32) facteur -> . variable
+    (33) variable -> . IDENTIFIANT
+    PORTE_NON       shift and go to state 12
+    BOOLEEN         shift and go to state 15
+    -               shift and go to state 16
+    (               shift and go to state 8
+    ENTIER          shift and go to state 19
+    LIRE            shift and go to state 20
+    IDENTIFIANT     shift and go to state 21
+
+    expr                           shift and go to state 59
+    argument                       shift and go to state 62
+    ouOp                           shift and go to state 10
+    nonOp                          shift and go to state 11
+    booleen                        shift and go to state 13
+    somme                          shift and go to state 14
+    facteur                        shift and go to state 17
+    produit                        shift and go to state 18
+    variable                       shift and go to state 22
+
+state 62
+
+    (35) argument -> expr , argument .
+    )               reduce using rule 35 (argument -> expr , argument .)
 
 
 Conflicts:
 
-reduce/reduce conflict in state 40 resolved using rule booleen -> somme
-rejected rule (booleen -> somme SUPERIEUR_OU_EGAL somme) in state 40
-reduce/reduce conflict in state 42 resolved using rule booleen -> somme
-rejected rule (booleen -> somme SUPERIEUR somme) in state 42
-reduce/reduce conflict in state 43 resolved using rule booleen -> somme
-rejected rule (booleen -> somme INFERIEUR_OU_EGAL somme) in state 43
-reduce/reduce conflict in state 44 resolved using rule booleen -> somme
-rejected rule (booleen -> somme INFERIEUR somme) in state 44
-reduce/reduce conflict in state 45 resolved using rule booleen -> somme
-rejected rule (booleen -> somme DIFFERENT somme) in state 45
-reduce/reduce conflict in state 46 resolved using rule booleen -> somme
-rejected rule (booleen -> somme EGAL_EGAL somme) in state 46
+shift/reduce conflict for PORTE_OU in state 44 resolved as shift
+shift/reduce conflict for + in state 44 resolved as shift
+shift/reduce conflict for - in state 44 resolved as shift
+reduce/reduce conflict in state 28 resolved using rule nonOp -> booleen
+rejected rule (nonOp -> PORTE_NON booleen) in state 28
+reduce/reduce conflict in state 47 resolved using rule booleen -> somme
+rejected rule (booleen -> somme SUPERIEUR_OU_EGAL somme) in state 47
+reduce/reduce conflict in state 48 resolved using rule booleen -> somme
+rejected rule (booleen -> somme SUPERIEUR somme) in state 48
+reduce/reduce conflict in state 49 resolved using rule booleen -> somme
+rejected rule (booleen -> somme INFERIEUR_OU_EGAL somme) in state 49
+reduce/reduce conflict in state 50 resolved using rule booleen -> somme
+rejected rule (booleen -> somme INFERIEUR somme) in state 50
+reduce/reduce conflict in state 51 resolved using rule booleen -> somme
+rejected rule (booleen -> somme DIFFERENT somme) in state 51
+reduce/reduce conflict in state 52 resolved using rule booleen -> somme
+rejected rule (booleen -> somme EGAL_EGAL somme) in state 52
