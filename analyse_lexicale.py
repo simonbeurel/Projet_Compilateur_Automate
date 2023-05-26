@@ -10,7 +10,6 @@ class FloLexer(Lexer):
                 SI, SINON,TANT_QUE, RETOURNER,
               }
 
-
     literals = {'+', '-', '*', '/', '%', '(', ')', ";", '{', '}', '<', '>', '=', '!', ','}
     ignore = ' \t'
     ignore_comment = r'\#.*'

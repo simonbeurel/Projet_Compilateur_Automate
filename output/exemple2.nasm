@@ -5,4 +5,8 @@ v$a:	resd	1
 section	.text
 global _start
 _start:
-type d'expression inconnu <class 'arbre_abstrait.Variable'>
+	push	1				 ; On détecte le booleen Vrai
+	pop	eax		
+	call	iprintLF		
+	mov	eax,	1			 ; 1 est le code de SYS_EXIT
+	int	0x80				 ; exit
