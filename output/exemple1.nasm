@@ -5,7 +5,7 @@ v$a:	resd	1
 section	.text
 global _start
 _start:
-	push	1		
+	push	1				 ; On détecte le booleen Vrai
 	pop	eax		
 	call	iprintLF		
 	mov	eax,	1			 ; 1 est le code de SYS_EXIT

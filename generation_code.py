@@ -80,6 +80,8 @@ Affiche le code nasm correspondant à une instruction
 def gen_instruction(instruction):
 	if type(instruction) == arbre_abstrait.Ecrire:
 		gen_ecrire(instruction)
+	elif type(instruction) == arbre_abstrait.Lire:
+		gen_lire(instruction)
 	else:
 		print("type instruction inconnu",type(instruction))
 		exit(0)
@@ -93,13 +95,27 @@ def gen_ecrire(ecrire):
 	nasm_instruction("call", "iprintLF", "", "", "") #on envoie la valeur d'eax sur la sortie standard
 
 """
+Affiche le code nasm correspondant au fait de lire une entrée utilisateur grâce à la fonction lire 
+"""
+def gen_lire(lire):
+	#gen_expression(lire.exp)
+	nasm_instruction("mov", "eax", "sinput", "", "")
+	nasm_instruction("call", "readline", "", "", "On va lire l'entree de l'utilisateur")
+	nasm_instruction("call", "atoi", "", "", "Transformer la chaine de caractère lue")
+	nasm_instruction("push", "eax", "", "", "")
+
+"""
 Affiche le code nasm pour calculer et empiler la valeur d'une expression
 """
 def gen_expression(expression):
 	if type(expression) == arbre_abstrait.Operation:
 		gen_operation(expression) #on calcule et empile la valeur de l'opération
 	elif type(expression) == arbre_abstrait.Entier:
-      		nasm_instruction("push", str(expression.valeur), "", "", "") ; #on met sur la pile la valeur entière			
+      		nasm_instruction("push", str(expression.valeur), "", "", "") ; #on met sur la pile la valeur entière
+	elif type(expression) == arbre_abstrait.Lire:
+		gen_lire(expression)
+	elif type(expression) == arbre_abstrait.Booleen:
+		gen_booleen(expression)
 	else:
 		print("type d'expression inconnu",type(expression))
 		exit(0)
@@ -116,6 +132,9 @@ def gen_operation(operation):
 	
 	nasm_instruction("pop", "ebx", "", "", "dépile la seconde operande dans ebx")
 	nasm_instruction("pop", "eax", "", "", "dépile la permière operande dans eax")
+
+	if operation.exp1 == "NON":
+		gen_booleen()
 	
 	code = {"+":"add","*":"imul","-":"sub","/":"idiv","%":"idiv"} #Un dictionnaire qui associe à chaque opérateur sa fonction nasm
 	#Voir: https://www.bencode.net/blob/nasmcheatsheet.pdf
@@ -130,7 +149,16 @@ def gen_operation(operation):
 		nasm_instruction("mov", "edx", "0", "", "met edx à 0 pour la division")
 		nasm_instruction(code[op], "ebx", "", "", "effectue l'opération eax" +op+"ebx et met le résultat dans eax" )
 		nasm_instruction("mov", "eax", "edx", "", "met le reste de la division dans eax")
-	nasm_instruction("push",  "eax" , "", "", "empile le résultat");	
+	nasm_instruction("push",  "eax" , "", "", "empile le résultat");
+
+"""
+Generation de code quand on rencontre un booleen dans notre programme
+"""
+def gen_booleen(booleen):
+	if booleen.valeur == "Vrai":
+		nasm_instruction("push", "1", "", "", "On détecte le booleen Vrai");  # on met sur la pile la valeur entière
+	else:
+		nasm_instruction("push", "0", "", "", "On détecte le booleen Faux")
 
 
 if __name__ == "__main__":
