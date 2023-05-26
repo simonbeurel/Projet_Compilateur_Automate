@@ -64,8 +64,8 @@ def gen_programme(programme):
 	printifm('global _start')
 	printifm('_start:')
 	gen_listeInstructions(programme.listeInstructions)
-	nasm_instruction("mov", "eax", "1", "", "1 est le code de SYS_EXIT") 
-	nasm_instruction("int", "0x80", "", "", "exit") 
+	nasm_instruction("mov", "eax", "1", "", "1 est le code de SYS_EXIT")
+	nasm_instruction("int", "0x80", "", "", "exit")
 	
 """
 Affiche le code nasm correspondant à une suite d'instructions
@@ -125,31 +125,42 @@ def gen_expression(expression):
 Affiche le code nasm pour calculer l'opération et la mettre en haut de la pile
 """
 def gen_operation(operation):
-	op = operation.op
-		
-	gen_expression(operation.exp1) #on calcule et empile la valeur de exp1
-	gen_expression(operation.exp2) #on calcule et empile la valeur de exp2
-	
-	nasm_instruction("pop", "ebx", "", "", "dépile la seconde operande dans ebx")
-	nasm_instruction("pop", "eax", "", "", "dépile la permière operande dans eax")
+    # lookup for nasm instruction names
+    code = {"+": "add", "*": "imul", "-": "sub", "/": "idiv", "%": "idiv", "et": "and", "ou": "or", "non": "xor"}
 
-	if operation.exp1 == "NON":
-		gen_booleen()
-	
-	code = {"+":"add","*":"imul","-":"sub","/":"idiv","%":"idiv"} #Un dictionnaire qui associe à chaque opérateur sa fonction nasm
-	#Voir: https://www.bencode.net/blob/nasmcheatsheet.pdf
-	if op in ['+','-']:
-		nasm_instruction(code[op], "eax", "ebx", "", "effectue l'opération eax" +op+"ebx et met le résultat dans eax" )
-	if op == '*':
-		nasm_instruction(code[op], "ebx", "", "", "effectue l'opération eax" +op+"ebx et met le résultat dans eax" )
-	if op == '/':
-		nasm_instruction("mov", "edx", "0", "", "met edx à 0 pour la division")
-		nasm_instruction(code[op], "ebx", "", "", "effectue l'opération eax" +op+"ebx et met le résultat dans eax" )
-	if op == '%':
-		nasm_instruction("mov", "edx", "0", "", "met edx à 0 pour la division")
-		nasm_instruction(code[op], "ebx", "", "", "effectue l'opération eax" +op+"ebx et met le résultat dans eax" )
-		nasm_instruction("mov", "eax", "edx", "", "met le reste de la division dans eax")
-	nasm_instruction("push",  "eax" , "", "", "empile le résultat");
+    gen_expression(operation.exp1)  # calculate and push the value of exp1
+    if operation.op != "non":  # the "non" operation is unary
+        gen_expression(operation.exp2)  # calculate and push the value of exp2
+
+    nasm_instruction("pop", "ebx", "", "", "pop the second operand into ebx")
+    nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
+
+    if operation.op in ["et", "ou"]:
+        # make sure both operands are booleans
+        if not isinstance(operation.exp1, arbre_abstrait.Booleen) or not isinstance(operation.exp2, arbre_abstrait.Booleen):
+            raise TypeError(f"Invalid operation: {operation.op} with non-boolean type")
+        nasm_instruction(code[operation.op], "eax", "ebx", "", f"performing eax {operation.op} ebx and putting the result in eax")
+    elif operation.op == "non":
+        # make sure the operand is a boolean
+        if not isinstance(operation.exp1, arbre_abstrait.Booleen):
+            raise TypeError(f"Invalid operation: {operation.op} with non-boolean type")
+        nasm_instruction(code[operation.op], "eax", "1", "", f"performing {operation.op} on eax and putting the result in eax")
+    else:
+        # arithmetic operations
+        if isinstance(operation.exp1, arbre_abstrait.Booleen) or isinstance(operation.exp2, arbre_abstrait.Booleen):
+            raise TypeError(f"Invalid operation: {operation.op} with boolean type")
+        if operation.op in ['+', '-']:
+            nasm_instruction(code[operation.op], "eax", "ebx", "", f"performing eax {operation.op} ebx and putting the result in eax")
+        elif operation.op == '*':
+            nasm_instruction(code[operation.op], "ebx", "", "", f"performing eax {operation.op} ebx and putting the result in eax")
+        elif operation.op == '/':
+            nasm_instruction("mov", "edx", "0", "", "set edx to 0 for division")
+            nasm_instruction(code[operation.op], "ebx", "", "", f"performing eax {operation.op} ebx and putting the result in eax")
+        elif operation.op == '%':
+            nasm_instruction("mov", "edx", "0", "", "set edx to 0 for division")
+            nasm_instruction(code[operation.op], "ebx", "", "", f"performing eax {operation.op} ebx and putting the result in eax")
+            nasm_instruction("mov", "eax", "edx", "", "move the remainder of the division into eax")
+    nasm_instruction("push", "eax", "", "", "push the result")
 
 """
 Generation de code quand on rencontre un booleen dans notre programme
