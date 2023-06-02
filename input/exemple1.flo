@@ -1,1 +1,4 @@
-ecrire(6>8);
+si(Vrai) {
+    ecrire(1);
+}
+ecrire(0);

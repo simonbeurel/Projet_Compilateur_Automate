@@ -168,42 +168,47 @@ def gen_operation(operation):
     nasm_instruction("push", "eax", "", "", "push the result")
 
 def gen_comparaison(comparaison):
-    gen_expression(comparaison.exp1)
-    gen_expression(comparaison.exp2)
+    gen_expression(comparaison.exp1)  # Générer le code pour l'expression 1
+    gen_expression(comparaison.exp2)  # Générer le code pour l'expression 2
 
+    # Générer une nouvelle étiquette pour le saut
     etiquette_vrai = nasm_nouvelle_etiquette()
     etiquette_fin = nasm_nouvelle_etiquette()
 
-    nasm_instruction("pop", "ebx", "", "", "pop the second operand into ebx")
-    nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
-    nasm_instruction("cmp", "eax", "ebx", "", "compare eax and ebx")
+    # Comparaison des valeurs
+    nasm_instruction("pop", "ebx", "", "", "Dépiler la deuxième expression dans ebx")
+    nasm_instruction("pop", "eax", "", "", "Dépiler la première expression dans eax")
+    nasm_instruction("cmp", "eax", "ebx", "", "Comparer eax et ebx")
 
+    # Saut conditionnel en fonction du résultat de la comparaison
     if comparaison.op == "==":
-        nasm_instruction("je", etiquette_vrai, "", "", "jump to etiquette_vrai if equal")
+        nasm_instruction("je", etiquette_vrai, "", "", "Sauter à l'étiquette_vrai si égal")
     elif comparaison.op == "!=":
-        nasm_instruction("jne", etiquette_vrai, "", "", "jump to etiquette_vrai if not equal")
+        nasm_instruction("jne", etiquette_vrai, "", "", "Sauter à l'étiquette_vrai si non égal")
     elif comparaison.op == "<":
-        nasm_instruction("jl", etiquette_vrai, "", "", "jump to etiquette_vrai if less than")
+        nasm_instruction("jl", etiquette_vrai, "", "", "Sauter à l'étiquette_vrai si inférieur")
     elif comparaison.op == ">":
-        nasm_instruction("jg", etiquette_vrai, "", "", "jump to etiquette_vrai if greater than")
+        nasm_instruction("jg", etiquette_vrai, "", "", "Sauter à l'étiquette_vrai si supérieur")
     elif comparaison.op == "<=":
-        nasm_instruction("jle", etiquette_vrai, "", "", "jump to etiquette_vrai if less than or equal")
+        nasm_instruction("jle", etiquette_vrai, "", "", "Sauter à l'étiquette_vrai si inférieur ou égal")
     elif comparaison.op == ">=":
-        nasm_instruction("jge", etiquette_vrai, "", "", "jump to etiquette_vrai if greater than or equal")
+        nasm_instruction("jge", etiquette_vrai, "", "", "Sauter à l'étiquette_vrai si supérieur ou égal")
 
-    # Si la comparaison est fausse, on met 0 sur la pile
-    nasm_instruction("push", "0", "", "", "push 0 as false")
+    # Si la comparaison est fausse, mettre 0 sur la pile
+    nasm_instruction("push", "0", "", "", "Mettre 0 sur la pile pour la condition fausse")
 
-    # Saut inconditionnel à la fin
-    nasm_instruction("jmp", etiquette_fin, "", "", "jump to etiquette_fin")
+    # Saut inconditionnel à l'étiquette_fin
+    nasm_instruction("jmp", etiquette_fin, "", "", "Sauter à l'étiquette_fin")
+
     # Étiquette pour le cas où la comparaison est vraie
-    nasm_instruction(etiquette_vrai + ":", "", "", "", "label for true condition")
+    nasm_instruction(etiquette_vrai + ":", "", "", "", "Étiquette pour la condition vraie")
 
     # Mettre 1 sur la pile pour représenter le résultat vrai de la comparaison
-    nasm_instruction("push", "1", "", "", "push 1 as true")
+    nasm_instruction("push", "1", "", "", "Mettre 1 sur la pile pour la condition vraie")
 
     # Étiquette pour la fin de la comparaison
-    nasm_instruction(etiquette_fin + ":", "", "", "", "label for end of comparison")
+    nasm_instruction(etiquette_fin + ":", "", "", "", "Étiquette pour la fin de la comparaison")
+
 
 
 """
