@@ -134,11 +134,9 @@ def gen_operation(operation):
 
     gen_expression(operation.exp1)  # calculate and push the value of exp1
     if operation.op != "non":  # the "non" operation is unary
-        nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
         gen_expression(operation.exp2)  # calculate and push the value of exp2
-
-    nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
-    nasm_instruction("pop", "ebx", "", "", "pop the second operand into ebx")
+        nasm_instruction("pop", "ebx", "", "", "pop the first operand into eax")
+    nasm_instruction("pop", "eax", "", "", "pop the second operand into ebx")
 
     if operation.op in ["et", "ou"]:
         # make sure both operands are booleans
