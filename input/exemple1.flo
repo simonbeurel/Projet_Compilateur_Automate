@@ -1,1 +1,2 @@
-ecrire(Faux);
+ecrire(7==4+3);
+ecrire(3*2 != 6*1);

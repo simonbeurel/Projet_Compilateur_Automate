@@ -49,6 +49,7 @@ def nasm_instruction(opcode, op1="", op2="", op3="", comment=""):
 Retourne le nom d'une nouvelle étiquette
 """
 def nasm_nouvelle_etiquette():
+    global num_etiquette_courante
     num_etiquette_courante+=1
     return "e"+str(num_etiquette_courante)
 
@@ -108,16 +109,19 @@ def gen_lire(lire):
 Affiche le code nasm pour calculer et empiler la valeur d'une expression
 """
 def gen_expression(expression):
-    if type(expression) == arbre_abstrait.Operation:
-        gen_operation(expression) #on calcule et empile la valeur de l'opération
-    elif type(expression) == arbre_abstrait.Entier:
-            nasm_instruction("push", str(expression.valeur), "", "", "") ; #on met sur la pile la valeur entière
-    elif type(expression) == arbre_abstrait.Lire:
-        gen_lire(expression)
-    elif type(expression) == arbre_abstrait.Booleen:
-        gen_booleen(expression)
+    if isinstance(expression, arbre_abstrait.Operation):
+        if expression.op in ["==", "!=", "<", ">", "<=", ">="]:
+            gen_comparaison(expression)  # Appel à la fonction de génération de code pour les comparaisons
+        else:
+            gen_operation(expression)  # Génération de code pour les autres opérations
+    elif isinstance(expression, arbre_abstrait.Entier):
+        nasm_instruction("push", str(expression.valeur), "", "", "push integer value")
+    elif isinstance(expression, arbre_abstrait.Lire):
+        gen_lire(expression)  # Génération de code pour la lecture d'une entrée utilisateur
+    elif isinstance(expression, arbre_abstrait.Booleen):
+        gen_booleen(expression)  # Génération de code pour les valeurs booléennes
     else:
-        print("type d'expression inconnu",type(expression))
+        print("type d'expression inconnu", type(expression))
         exit(0)
 
 
@@ -130,11 +134,9 @@ def gen_operation(operation):
 
     gen_expression(operation.exp1)  # calculate and push the value of exp1
     if operation.op != "non":  # the "non" operation is unary
-        nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
         gen_expression(operation.exp2)  # calculate and push the value of exp2
-
-    nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
-    nasm_instruction("pop", "ebx", "", "", "pop the second operand into ebx")
+        nasm_instruction("pop", "ebx", "", "", "pop the first operand into eax")
+    nasm_instruction("pop", "eax", "", "", "pop the second operand into ebx")
 
     if operation.op in ["et", "ou"]:
         # make sure both operands are booleans
@@ -162,6 +164,45 @@ def gen_operation(operation):
             nasm_instruction(code[operation.op], "ebx", "", "", f"performing eax {operation.op} ebx and putting the result in eax")
             nasm_instruction("mov", "eax", "edx", "", "move the remainder of the division into eax")
     nasm_instruction("push", "eax", "", "", "push the result")
+
+def gen_comparaison(comparaison):
+    gen_expression(comparaison.exp1)
+    gen_expression(comparaison.exp2)
+
+    etiquette_vrai = nasm_nouvelle_etiquette()
+    etiquette_fin = nasm_nouvelle_etiquette()
+
+    nasm_instruction("pop", "ebx", "", "", "pop the second operand into ebx")
+    nasm_instruction("pop", "eax", "", "", "pop the first operand into eax")
+    nasm_instruction("cmp", "eax", "ebx", "", "compare eax and ebx")
+
+    if comparaison.op == "==":
+        nasm_instruction("je", etiquette_vrai, "", "", "jump to etiquette_vrai if equal")
+    elif comparaison.op == "!=":
+        nasm_instruction("jne", etiquette_vrai, "", "", "jump to etiquette_vrai if not equal")
+    elif comparaison.op == "<":
+        nasm_instruction("jl", etiquette_vrai, "", "", "jump to etiquette_vrai if less than")
+    elif comparaison.op == ">":
+        nasm_instruction("jg", etiquette_vrai, "", "", "jump to etiquette_vrai if greater than")
+    elif comparaison.op == "<=":
+        nasm_instruction("jle", etiquette_vrai, "", "", "jump to etiquette_vrai if less than or equal")
+    elif comparaison.op == ">=":
+        nasm_instruction("jge", etiquette_vrai, "", "", "jump to etiquette_vrai if greater than or equal")
+
+    # Si la comparaison est fausse, on met 0 sur la pile
+    nasm_instruction("push", "0", "", "", "push 0 as false")
+
+    # Saut inconditionnel à la fin
+    nasm_instruction("jmp", etiquette_fin, "", "", "jump to etiquette_fin")
+    # Étiquette pour le cas où la comparaison est vraie
+    nasm_instruction(etiquette_vrai + ":", "", "", "", "label for true condition")
+
+    # Mettre 1 sur la pile pour représenter le résultat vrai de la comparaison
+    nasm_instruction("push", "1", "", "", "push 1 as true")
+
+    # Étiquette pour la fin de la comparaison
+    nasm_instruction(etiquette_fin + ":", "", "", "", "label for end of comparison")
+
 
 """
 Generation de code quand on rencontre un booleen dans notre programme
