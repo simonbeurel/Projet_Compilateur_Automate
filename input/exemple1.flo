@@ -1,2 +1,4 @@
-ecrire(7==4+3);
-ecrire(3*2 != 6*1);
+si(Vrai) {
+    ecrire(1);
+}
+ecrire(0);
