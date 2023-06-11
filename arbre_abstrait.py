@@ -117,28 +117,30 @@ class DeclarationAffectation:
 
 
 class Conditionnelle:
-    def __init__(self,exprSi,listeInstructionsSi,listeSinonSi,listeInstructionSinon):
-        self.exprSi = exprSi
+    def __init__(self, condition, listeInstructionsSi, listeSinonSi, listeInstructionsSinon):
+        self.condition = condition
         self.listeInstructionsSi = listeInstructionsSi
         self.listeSinonSi = listeSinonSi
-        self.listeSinon = listeInstructionSinon
-    def afficher(self,indent=0):
-        afficher("<conditionnelle>",indent)
-        afficher("<Si>",indent)
-        self.exprSi.afficher(indent+1)
-        afficher("</Si>",indent)
-        afficher("<Alors>",indent)
-        self.listeInstructionsSi.afficher(indent+1)
-        afficher("</Alors>",indent)
-        if self.listeSinonSi != None:
-            afficher("<SinonSi>",indent)
-            self.listeSinonSi.afficher(indent+1)
-            afficher("</SinonSi>",indent)
-        if self.listeSinon != None:
-            afficher("<Sinon>",indent)
-            self.listeSinon.afficher(indent+1)
-            afficher("</Sinon>",indent)
-        afficher("</conditionnelle>",indent)
+        self.listeInstructionsSinon = listeInstructionsSinon
+
+    def afficher(self, indent=0):
+        afficher("<conditionnelle>", indent)
+        afficher("<Si>", indent)
+        self.condition.afficher(indent + 1)
+        afficher("</Si>", indent)
+        afficher("<Alors>", indent)
+        self.listeInstructionsSi.afficher(indent + 1)
+        afficher("</Alors>", indent)
+        if self.listeSinonSi is not None:
+            afficher("<SinonSi>", indent)
+            self.listeSinonSi.afficher(indent + 1)
+            afficher("</SinonSi>", indent)
+        if self.listeInstructionsSinon is not None:
+            afficher("<Sinon>", indent)
+            self.listeInstructionsSinon.afficher(indent + 1)
+            afficher("</Sinon>", indent)
+        afficher("</conditionnelle>", indent)
+
 
 
 class BoucleTantQue:

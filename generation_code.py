@@ -83,10 +83,65 @@ def gen_instruction(instruction):
         gen_ecrire(instruction)
     elif type(instruction) == arbre_abstrait.Lire:
         gen_lire(instruction)
+    elif type(instruction) == arbre_abstrait.Conditionnelle:  # Ajout de la clause pour l'instruction Conditionnelle
+        gen_conditionnelle(instruction)
     else:
         print("type instruction inconnu",type(instruction))
         exit(0)
+def gen_conditionnelle(conditionnelle):
+    # Évaluation de l'expression de condition
+    gen_expression(conditionnelle.condition)
+    nasm_instruction("pop", "eax", "", "", "Dépiler la valeur de la condition dans eax")
 
+    # Générer une nouvelle étiquette pour les sauts
+    etiquette_fin = nasm_nouvelle_etiquette()
+
+    # Saut inconditionnel si la condition est fausse
+    nasm_instruction("cmp", "eax", "0", "", "Comparer la valeur de la condition avec 0")
+    nasm_instruction("je", etiquette_fin, "", "", "Sauter à l'étiquette_fin si la condition est fausse")
+
+    # Génération du code pour la liste d'instructions principale
+    if conditionnelle.listeInstructionsSi is not None:
+        gen_listeInstructions(conditionnelle.listeInstructionsSi)
+
+    # Générer un saut inconditionnel à l'étiquette_fin
+    nasm_instruction("jmp", etiquette_fin, "", "", "Sauter à l'étiquette_fin après l'exécution de la liste d'instructions")
+
+    # Étiquette_fin
+    nasm_instruction(etiquette_fin + ":", "", "", "", "Étiquette pour la fin de l'instruction Conditionnelle")
+
+    # Génération du code pour les clauses listeSinonSi et SINON, le cas échéant
+    if conditionnelle.listeSinonSi is not None:
+        gen_listeSinonSi(conditionnelle.listeSinonSi)
+
+    if conditionnelle.listeInstructionsSinon is not None:
+        gen_listeInstructions(conditionnelle.listeInstructionsSinon)
+
+def gen_listeSinonSi(listeSinonSi):
+    for sinonSi in listeSinonSi.sinonSi:
+        # Évaluation de l'expression de condition
+        gen_expression(sinonSi.condition)
+        nasm_instruction("pop", "eax", "", "", "Dépiler la valeur de la condition dans eax")
+
+        # Générer une nouvelle étiquette pour les sauts
+        etiquette_fin = nasm_nouvelle_etiquette()
+
+        # Saut inconditionnel si la condition est fausse
+        nasm_instruction("cmp", "eax", "0", "", "Comparer la valeur de la condition avec 0")
+        nasm_instruction("je", etiquette_fin, "", "", "Sauter à l'étiquette_fin si la condition est fausse")
+
+        # Génération du code pour la liste d'instructions correspondante
+        gen_listeInstructions(sinonSi.listeInstructions)
+
+        # Générer un saut inconditionnel à l'étiquette_fin
+        nasm_instruction("jmp", etiquette_fin, "", "", "Sauter à l'étiquette_fin après l'exécution de la liste d'instructions")
+
+        # Étiquette_fin
+        nasm_instruction(etiquette_fin + ":", "", "", "", "Étiquette pour la fin de la clause SinonSi")
+
+def gen_listeInstructions(listeInstructions):
+    for instruction in listeInstructions.instructions:
+        gen_instruction(instruction)
 """
 Affiche le code nasm correspondant au fait d'envoyer la valeur entière d'une expression sur la sortie standard
 """	
